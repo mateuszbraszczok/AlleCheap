@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
   <title>Alle Cheap</title>
 </head>
 
@@ -25,7 +25,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Auctions</a>
@@ -37,7 +37,7 @@
     </ul>
     <ul class="navbar-nav ml-auto">
     <li class="nav-item">
-      <a class="nav-link" href="pages/login.php"><button type="button" class="btn btn-primary">Login</button></a>
+      <a class="nav-link"><button type="button" class="btn btn-primary">Login</button></a>
     </li>
     <li class="nav-item">
       <a class="nav-link"><button type="button" class="btn btn-success">Sign In</button></a>
@@ -49,7 +49,33 @@
 
 
   <main>
-  <?php echo("<br>Hello WORLD2") ?>
+
+    <div class="container">
+    <div class="row justify-content-md-center">
+
+        <div class="col-md-auto">
+        <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+
+    </div>
+
+    </div>
+    <br>
   </main>
 
 
