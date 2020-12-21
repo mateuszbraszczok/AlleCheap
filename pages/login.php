@@ -40,7 +40,7 @@
       <a class="nav-link"><button type="button" class="btn btn-primary">Login</button></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link"><button type="button" class="btn btn-success">Sign In</button></a>
+      <a class="nav-link" href="register.php"><button type="button" class="btn btn-success">Sign In</button></a>
     </li>
   </ul>
   </div>
@@ -54,10 +54,11 @@
     
     <div class="row ">
 
-        <div class="col-sm-1"></div>
+        <div class="col-sm-1 col-lg-3"></div>
         
-        <div class="col-sm-6">
+        <div class="col-sm-6 col-lg-4" >
         <form>
+        <fieldset style=" padding:20px; border: 1px solid lightgray;">
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -72,9 +73,10 @@
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        </fieldset>
         </form>
         </div>
-        <div class="col-sm-5"></div>
+        <div class="col-sm-5 col-lg-5"></div>
     </div>
 
     </div>
