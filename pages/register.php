@@ -8,7 +8,7 @@
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
-  <title>Alle Cheap</title>
+  <title>AlleCheap</title>
 </head>
 
 <body>
