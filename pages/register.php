@@ -6,6 +6,7 @@
 	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
   <title>AlleCheap</title>
@@ -53,43 +54,50 @@
     <div class="row ">
         <div class="col-sm-1 col-lg-2"></div>      
         <div class="col-sm-8 col-lg-6" >
-        <form>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
           <fieldset style=" padding:20px; border: 1px solid lightgray;">
           <form>
-          <div class="form-group ">
-              <label for="inputNickl4">NickName</label>
-              <input type="text" class="form-control" id="inputnick4" placeholder="Nickname">
-          </div>
           <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputEmail4">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-              </div>
-              <div class="form-group col-md-6">
-              <label for="inputPassword4">Password</label>
-              <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-              </div>
-          </div>
-          
-          <div class="form-row">
-              <div class="form-group col-md-6">
-              <label for="inputCity">City</label>
-              <input type="text" class="form-control" id="inputCity">
+              <label for="FirstName">First Name</label>
+              <input type="text" class="form-control" id="FirstName" placeholder="First Name" required >
               </div>        
               <div class="form-group col-md-6">
-              <label for="inputZip">Country</label>
-              <input type="text" class="form-control" id="inputCountry">
+              <label for="LastName">Last Name</label>
+              <input type="text" class="form-control" id="LastName" placeholder="Last Name" required pattern="[A-BD-Za-z0-9()._-‘]+">
               </div>
           </div>
+          <div class="form-group ">
+              <label for="inputUserName">Username (4 to 20 characters)</label>
+              <input type="text" class="form-control" id="inputUserName" placeholder="Username" required pattern=".{4,20}"  title="4 to 20 characters">
+          </div>
+          <div class="form-group ">
+              <label for="inputEmail">Your e-mail</label>
+              <input type="email" class="form-control" id="inputEmail" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputPassword">Password (8 to 20 characters)</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" required pattern="(?=^.{8,20}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"   title="UpperCase, LowerCase, Number/SpecialChar and 8 to 20 Chars">
+              </div>
+              <div class="form-group col-md-6">
+              <label for="confirmPassword" id="labpass">Confirm Password</label>
+              <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required pattern="(?=^.{8,20}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"  title="UpperCase, LowerCase, Number/SpecialChar and 8 to 20 Chars">
+              </div>
+          </div>
+
           <div class="form-group">
               <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
+              <input class="form-check-input" type="checkbox" id="gridCheck" required>
               <label class="form-check-label" for="gridCheck">
                   I am over 18 years old
               </label>
               </div>
           </div>
-          <button type="submit" class="btn btn-success">Sign in</button>
+          <div class="g-recaptcha" data-sitekey="6LeHYRoaAAAAAHP8fKuA3s448k98-uyxNyiDKehU"></div>
+          <br>
+          <button type="submit" class="btn btn-success" id="submbutt">Sign in</button>
           </form>
           </fieldset>
         </form>
@@ -108,7 +116,34 @@
       <span class="text-dark">Braszczok & Wojciechowski</span>
     </div>
   </footer>
-  
+
+
+  <script>
+    const email = document.getElementById("inputEmail");
+    const pass1 = document.getElementById("confirmPassword");
+    const pass2 = document.getElementById("inputPassword");
+
+    email.addEventListener("input", function (event) {
+      if (email.validity.typeMismatch) {
+        email.setCustomValidity("I am expecting an valid e-mail address");
+        
+      } else {
+        email.setCustomValidity("");
+        
+      }
+    });
+    pass1.addEventListener("input", function (event) {
+      if (pass1.value == pass2.value) {
+        pass1.setCustomValidity("");
+        document.getElementById("labpass").style.color = "black";
+        
+        
+      } else {
+        pass1.setCustomValidity("Passwords vary");   
+        document.getElementById("labpass").style.color = "red";     
+      }
+    });
+</script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
