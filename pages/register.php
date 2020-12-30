@@ -2,6 +2,9 @@
 
   session_start();
   
+  if (isset($_SESSION['login']))
+    header("location: ../index.php");
+
   $FirstName = $LastName = $Username = $email_address = $pass1 = $pass2 = "";
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ProperData = true;
@@ -92,8 +95,7 @@
           else
           {
             throw new Exception($conn->error);
-          }
-            
+          }   
         }
 				$conn->close();
 			}	

@@ -1,3 +1,11 @@
+<?php 
+session_start();
+  if (isset($_SESSION['login']))
+  {
+    if ($_SESSION['login'] != true)
+      unset($_SESSION['login']);
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,12 +42,19 @@
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="pages/login.php"><button type="button" class="btn btn-primary">Login</button></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
-        </li>
+        <?php 
+        if (!isset($_SESSION['login']))
+          echo('<li class="nav-item">
+            <a class="nav-link" href="pages/login.php"><button type="button" class="btn btn-primary">Login</button></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
+          </li>'); 
+        else
+        echo('<li class="nav-item">
+          <a class="nav-link" href="pages/logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
+        </li>');
+        ?>
       </ul>
       </div>
     </nav>

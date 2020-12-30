@@ -1,5 +1,78 @@
+<?php
 
+  session_start();
+  
+  if (isset($_SESSION['login']))
+    header("location: ../index.php");
 
+    if ((isset($_POST['username'])) && (isset($_POST['pass'])))
+    { 
+      require_once "dbconnect.php";
+      mysqli_report(MYSQLI_REPORT_STRICT);
+        
+      try 
+      {
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_errno!=0)
+        {
+          throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {
+          $username = $_POST['username'];
+          $pass = $_POST['pass'];
+          
+          $username = htmlentities($username, ENT_QUOTES, "UTF-8");
+        
+          if ($result = $conn->query(
+          sprintf("SELECT * FROM users WHERE username='%s'",
+          mysqli_real_escape_string($conn,$username))))
+          {
+            $how_many_users = $result->num_rows;
+            if($how_many_users>0)
+            {
+              $row = $result->fetch_assoc();
+              
+              if (password_verify($pass, $row['pass']))
+              {
+                $_SESSION['login'] = true;
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['username'] = $row['username'];
+                $_SESSION['firstname'] = $row['firstname'];
+                $_SESSION['lastname'] = $row['lastname'];
+                $_SESSION['email'] = $row['email'];
+
+                
+                unset($_SESSION['error']);
+                $result->free_result();
+                header("location: ../index.php");
+              }
+              else 
+              {
+                $_SESSION['error'] = '<p style="color:red">Incorrect Username or Password!</p>';         
+              }
+              
+            } else {
+              
+              $_SESSION['error'] = '<p style="color:red">Incorrect Username or Password!</p>'; 
+            }
+            
+          }
+          else
+          {
+            throw new Exception($conn->error);
+          }
+          
+          $conn->close();
+        }
+      }
+      catch(Exception $e)
+      {
+        echo '<p style="color:red;">Server error! Please visit us later!</p>';
+        echo '<br />Info for devs: '.$e;
+      }
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,17 +129,19 @@
     <div class="row ">
         <div class="col-sm-1 col-lg-3"></div>
         <div class="col-sm-6 col-lg-4" >
-        <form>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
           <fieldset style=" padding:20px; border: 1px solid lightgray;">
           <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter your username" required>
           </div>
           <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              <label for="pass">Password</label>
+              <input type="password" class="form-control" id="pass" name="pass" placeholder="Password" required>
           </div>
+          <?php if(isset($_SESSION['error']))
+            echo($_SESSION['error']);
+          ?>
           <button type="submit" class="btn btn-primary">Login</button>
           </fieldset>
         </form>
