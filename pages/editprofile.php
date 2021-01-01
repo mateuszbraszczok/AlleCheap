@@ -4,6 +4,7 @@ session_start();
   {
     header("location: ../index.php");
   }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +17,30 @@ session_start();
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
   <title>AlleCheap</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    #output {
+      width: 440px;
+      height: 440px;
+    }
+
+    @media screen and (max-width: 992px) {
+      #output {
+        width: 400px;
+        height: 400px;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      #output {
+        width: 320px;
+        height: 320px;
+      }
+    }
+</style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -51,9 +76,7 @@ session_start();
           </li>'); 
         else
         echo('
-          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-        </svg> Your Profile</a>
+          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php"><img  src="Profile_pictures/default.png" style="max-width:24px; max-height:24px; width:100%;"/>     Your Profile</a>
         
         <li class="nav-item">
           <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
@@ -72,11 +95,51 @@ session_start();
     <div class="container" >   
         <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
             <div class="col-md">
+            
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                    <img id="output" src="Profile_pictures/default.png" style="max-width:400px; max-height:400px; width:100%;"/> <br><br>
+                  <div class="row ">
+                  <div class="col-md-7">
+                    <div class="image">
+                    <img id="output" class="img-thumbnail img img-responsive full-width"  src="Profile_pictures/default.png" style="  vertical-align:middle" /> <br><br>
+                    </div>
+                    <br>
                     <label for="img">Change profile picture:</label><br>
                     <input type="file" accept="image/*" id="img" name="img" onchange="loadFile(event)">
-                </form>
+                    </div>
+                    <div class="col-md-5">
+                     
+                    <label for="UserName">User Name</label>
+                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="User Name" required value="<?php
+                      if (isset($_SESSION['username']))
+                      {
+                        echo $_SESSION['username'];
+                      }
+                    ?>">
+                    <hr>
+                    <label for="FirstName">First Name</label>
+                    <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" required value="<?php
+                      if (isset($_SESSION['firstname']))
+                      {
+                        echo $_SESSION['firstname'];
+                      }
+                    ?>">
+                           
+                    <hr>
+                    <label for="LastName">Last Name</label>
+                    <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Last Name" required pattern="[A-BD-Za-z0-9()._-‘]+" value="<?php
+                      if (isset($_SESSION['lastname']))
+                      {
+                        echo $_SESSION['lastname'];
+                      }
+                    ?>">
+
+                  <br>
+                  
+                    <button type="submit" class="btn btn-primary">Change settings</button>
+                    </div>
+                </form>  
+                
+                
             </div>
         </div>
     </div>
@@ -100,7 +163,7 @@ session_start();
 
   var loadFile = function(event) {
     var output = document.getElementById('output');
-    if(event.target.files[0].size > 4194304){
+    if(event.target.files[0].size > 5242880){
        alert("File is too big!");
        event.target.value = "";
     }
