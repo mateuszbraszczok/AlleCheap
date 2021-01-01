@@ -1,9 +1,8 @@
 <?php 
 session_start();
-  if (isset($_SESSION['login']))
+  if (!isset($_SESSION['login']))
   {
-    if ($_SESSION['login'] != true)
-      unset($_SESSION['login']);
+    header("location: ../index.php");
   }
 ?>
 <!DOCTYPE html>
@@ -23,7 +22,7 @@ session_start();
 
   <header> 
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a style="margin-left:15px;" class="navbar-brand" href="index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+      <a style="margin-left:15px;" class="navbar-brand" href="../index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
       </svg> AlleCheap</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,12 +51,12 @@ session_start();
           </li>'); 
         else
         echo('
-          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="pages/profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
           <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
         </svg> Your Profile</a>
         
         <li class="nav-item">
-          <a class="nav-link" href="pages/logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
+          <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');
         ?>
       </ul>
@@ -66,8 +65,22 @@ session_start();
   </header>
 
 
+
+
   <main>
-    <?php echo("<br>Hello WORLD2") ?>
+    <br>
+    <div class="container" >   
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+            <div class="col-md">
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                    <img id="output" src="Profile_pictures/default.png" style="max-width:400px; max-height:400px; width:100%;"/> <br><br>
+                    <label for="img">Change profile picture:</label><br>
+                    <input type="file" accept="image/*" id="img" name="img" onchange="loadFile(event)">
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
   </main>
 
 
@@ -82,6 +95,23 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-    
+
+  <script>
+
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    if(event.target.files[0].size > 4194304){
+       alert("File is too big!");
+       event.target.value = "";
+    }
+    else {
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+        }
+    }
+  };
+</script>
+
 </body>
 </html>

@@ -1,9 +1,8 @@
 <?php 
 session_start();
-  if (isset($_SESSION['login']))
+  if (!isset($_SESSION['login']))
   {
-    if ($_SESSION['login'] != true)
-      unset($_SESSION['login']);
+    header("location: ../index.php");
   }
 ?>
 <!DOCTYPE html>
@@ -23,7 +22,7 @@ session_start();
 
   <header> 
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a style="margin-left:15px;" class="navbar-brand" href="index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+      <a style="margin-left:15px;" class="navbar-brand" href="../index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
       </svg> AlleCheap</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,12 +51,12 @@ session_start();
           </li>'); 
         else
         echo('
-          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="pages/profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
           <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
         </svg> Your Profile</a>
         
         <li class="nav-item">
-          <a class="nav-link" href="pages/logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
+          <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');
         ?>
       </ul>
@@ -67,7 +66,64 @@ session_start();
 
 
   <main>
-    <?php echo("<br>Hello WORLD2") ?>
+    <br>
+    <div class="container" >   
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+            <div class="col-md-4 col-lg-5">
+                <img src="Profile_pictures/default.png" alt="" style="width:100%;">
+                <br><br>
+                <p style="text-align: center;"> ID : <?php echo($_SESSION['id']); ?></p>
+                <section class="mt-4 px-lg-3 " >
+                    <a href="editprofile.php" class="btn btn-outline-secondary btn-lg btn-block text-truncate">
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        Edit my profile
+                    </a>
+                    <br>
+                </section>
+            </div>
+            <div class="col-md-8 col-lg-7">
+                <div class="container" style="border-style: solid; border-width: 1px; padding:20px; border-color: DarkGray;">   
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your Username : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php echo($_SESSION['username']); ?></p>
+                        </div>
+                    </div>   
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate" >
+                            <p style="margin-bottom:0px;"> Your Firstname : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate" >
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php echo($_SESSION['firstname']); ?></p>
+                        </div>
+                    </div>  
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                        <p style="margin-bottom:0px;"> Your Lastname : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php echo($_SESSION['lastname']); ?></p>
+                        </div>
+                    </div>   
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your E-mail : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php echo($_SESSION['email']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
   </main>
 
 

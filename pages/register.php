@@ -89,7 +89,11 @@
             
           if ($conn->query("INSERT INTO users VALUES (NULL, '$FirstName', '$LastName', '$Username', '$email_address', '$pass_hash')"))
           {
-            $_SESSION['login']=true;
+            $_SESSION['login'] = true;
+            $_SESSION['username'] = $Username;
+            $_SESSION['firstname'] = $FirstName;
+            $_SESSION['lastname'] = $LastName;
+            $_SESSION['email'] = $email_address;
             header('Location: ../index.php');
           }
           else
@@ -143,7 +147,7 @@
 <body class="d-flex flex-column min-vh-100">
 
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
       <a style="margin-left:15px;" class="navbar-brand" href="../index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
       </svg> AlleCheap</a>
@@ -181,7 +185,7 @@
     <div class="container">
     <div class="row ">
         <div class="col-sm-1 col-lg-2"></div>      
-        <div class="col-sm-8 col-lg-6" >
+        <div class="col-sm-9 col-lg-7" >
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
           <fieldset style=" padding:20px; border: 1px solid lightgray;">
           <form>
@@ -289,7 +293,7 @@
           </fieldset>
         </form>
         </div>
-        <div class="col-sm-3 col-lg-2"></div>
+        <div class="col-sm-2 col-lg-1"></div>
     </div>
     </div>
     <br>
