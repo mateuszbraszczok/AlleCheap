@@ -8,7 +8,6 @@
     if ((isset($_POST['username'])) && (isset($_POST['pass'])))
     { 
       require_once "dbconnect.php";
-      mysqli_report(MYSQLI_REPORT_STRICT);
         
       try 
       {
@@ -34,13 +33,35 @@
               $row = $result->fetch_assoc();
               
               if (password_verify($pass, $row['pass']))
-              {
+              {  
                 $_SESSION['login'] = true;
                 $_SESSION['username'] = $row['username'];
                 $_SESSION['firstname'] = $row['firstname'];
                 $_SESSION['lastname'] = $row['lastname'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['id'] = $row['ID'];
+
+                $sql = "SELECT * FROM userimg WHERE userID=".$_SESSION['id'];      
+                $result = $conn->query($sql);  
+                if (!$result) throw new Exception($conn->error);
+                if($result->num_rows>0)    
+                {
+                  $row = $result->fetch_assoc();
+
+                  $_SESSION['imgstatus']=$row['status'];   
+                } 
+                else
+                {
+                  if ($conn->query("INSERT INTO userimg VALUES (NULL, '".$_SESSION['id']."', 'profile_pictures/default.png')"))
+                  {
+                    $_SESSION['imgstatus']='profile_pictures/default.png'; 
+                  }
+                  else
+                  {
+                    throw new Exception($conn->error);
+                  }  
+                }
+                  
                 unset($_SESSION['error']);
                 $result->free_result();
                 header("location: ../index.php");

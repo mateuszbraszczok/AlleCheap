@@ -47,7 +47,6 @@
 
 
     require_once "dbconnect.php";
-    mysqli_report(MYSQLI_REPORT_STRICT);
 
 
     try 
@@ -192,7 +191,7 @@
           <div class="form-row">
               <div class="form-group col-md-6">
               <label for="FirstName">First Name</label>
-              <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" required value="<?php
+              <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" required pattern="[A-BD-Za-z0-9()._-‘]+" value="<?php
                 if (isset($_SESSION['fr_FirstName']))
                 {
                   echo $_SESSION['fr_FirstName'];

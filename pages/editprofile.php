@@ -4,8 +4,181 @@ session_start();
   {
     header("location: ../index.php");
   }
+  $FirstName = $LastName = $Username = "";
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    $ProperData = true;
+    $FirstName = test_input($_POST["FirstName"]);
+    $LastName = test_input($_POST["LastName"]);
+    $UserName = test_input($_POST["UserName"]);
+    
 
+    if($FirstName !== $_SESSION['firstname'])
+    {
+
+      require_once "dbconnect.php";
+
+      try 
+		  {
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_errno!=0)
+        {
+          throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {      
+          $sql = "UPDATE users SET firstname='".$FirstName."' WHERE id=".$_SESSION['id'];        
+          if (!$conn->query($sql)) throw new Exception($conn->error);
+          else $_SESSION['firstname']=$FirstName;        
+          $conn->close();
+        }	
+      }
+      catch(Exception $e)
+      {
+        echo '<span style="color:red;">Server error! Please visit us later!</span>';
+        echo '<br />Info for devs: '.$e;
+      }
+    }
+    if($LastName !== $_SESSION['lastname'])
+    {
+
+      require_once "dbconnect.php";
+
+      try 
+		  {
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_errno!=0)
+        {
+          throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {      
+          $sql = "UPDATE users SET lastname='".$LastName."' WHERE id=".$_SESSION['id'];        
+          if (!$conn->query($sql)) throw new Exception($conn->error);
+          else $_SESSION['lastname']=$LastName;        
+          $conn->close();
+        }	
+      }
+      catch(Exception $e)
+      {
+        echo '<span style="color:red;">Server error! Please visit us later!</span>';
+        echo '<br />Info for devs: '.$e;
+      }
+    }
+    if($UserName !== $_SESSION['username'])
+    {
+
+      require_once "dbconnect.php";
+
+      try 
+		  {
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_errno!=0)
+        {
+          throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {      
+          $sql = "UPDATE users SET username='".$UserName."' WHERE id=".$_SESSION['id'];        
+          if (!$conn->query($sql)) throw new Exception($conn->error);
+          else $_SESSION['username']=$UserName;        
+          $conn->close();
+        }	
+      }
+      catch(Exception $e)
+      {
+        echo '<span style="color:red;">Server error! Please visit us later!</span>';
+        echo '<br />Info for devs: '.$e;
+      }
+    }
+    if(isset($_FILES['img']))
+    {
+    $file = $_FILES['img'];
+    $fileName = $_FILES['img']['name'];
+    $fileTmpName = $_FILES['img']['tmp_name'];
+    $fileSize = $_FILES['img']['size'];
+    $fileError = $_FILES['img']['error'];
+    $fileType = $_FILES['img']['type'];
+
+    $fileExt = explode('.',$fileName);
+    $fileActualExt = strtolower(end($fileExt));
+
+    $allowed = array('jpg','jpeg','png');
+
+    if(in_array($fileActualExt,$allowed)) {
+      if($fileActualExt =='jpeg')
+        $fileActualExt='jpg';
+      if ($fileError === 0){
+        $fileNameNew = "profile".$_SESSION['id'].".".$fileActualExt;
+        $fileDestination = 'profile_pictures/'.$fileNameNew ;
+        move_uploaded_file($fileTmpName, $fileDestination);
+        require_once "dbconnect.php";
+
+        try 
+        {
+          $conn = new mysqli($servername, $username, $password, $dbname);
+          if ($conn->connect_errno!=0)
+          {
+            throw new Exception(mysqli_connect_errno());
+          }
+          else
+          {      
+            $sql = "UPDATE userimg SET status='".$fileDestination."' WHERE userID=".$_SESSION['id'];      
+            if (!$conn->query($sql)) throw new Exception($conn->error);
+            else $_SESSION['imgstatus']=$fileDestination;   
+            $wmax = 640;
+          	$hmax = 640; 
+            img_resize($fileDestination, $fileDestination, $wmax, $hmax, $fileActualExt);    
+            $conn->close();
+          }	
+        }
+        catch(Exception $e)
+        {
+          echo '<span style="color:red;">Server error! Please visit us later!</span>';
+          echo '<br />Info for devs: '.$e;
+        }
+      }
+      else {
+        echo "There was an error uploading your file!";
+      }
+    }
+    else {
+      echo "You cannot upload files of this type!";
+    }
+  }
+  }
+  
+  function img_resize($target, $newcopy, $w, $h, $ext) {
+    list($w_orig, $h_orig) = getimagesize($target);
+   /* $scale_ratio = $w_orig / $h_orig;
+    if (($w / $h) > $scale_ratio) {
+           $w = $h * $scale_ratio;
+    } else {
+           $h = $w / $scale_ratio;
+    }*/
+    $img = "";
+    if ($ext == "gif"){ 
+      $img = imagecreatefromgif($target);
+    } else if($ext =="png"){ 
+      $img = imagecreatefrompng($target);
+    } else { 
+      $img = imagecreatefromjpeg($target);
+    }
+    $tci = imagecreatetruecolor($w, $h);
+    // imagecopyresampled(dst_img, src_img, dst_x, dst_y, src_x, src_y, dst_w, dst_h, src_w, src_h)
+    imagecopyresampled($tci, $img, 0, 0, 0, 0, $w, $h, $w_orig, $h_orig);
+    imagejpeg($tci, $newcopy, 84);
+}
+
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +209,8 @@ session_start();
 
     @media screen and (max-width: 600px) {
       #output {
-        width: 320px;
-        height: 320px;
+        width: 300px;
+        height: 300px;
       }
     }
 </style>
@@ -75,19 +248,15 @@ session_start();
             <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('
-          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php"><img  src="Profile_pictures/default.png" style="max-width:24px; max-height:24px; width:100%;"/>     Your Profile</a>
-        
+        echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php">
+        <img  src="'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
         <li class="nav-item">
           <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
-        </li>');
-        ?>
+        </li>');?>
       </ul>
       </div>
     </nav>
   </header>
-
-
 
 
   <main>
@@ -96,11 +265,11 @@ session_start();
         <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
             <div class="col-md">
             
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                   <div class="row ">
                   <div class="col-md-7">
                     <div class="image">
-                    <img id="output" class="img-thumbnail img img-responsive full-width"  src="Profile_pictures/default.png" style="  vertical-align:middle" /> <br><br>
+                    <img id="output" class="img-thumbnail img img-responsive full-width"  src="<?php echo($_SESSION['imgstatus']);?>" style="  vertical-align:middle" /> <br><br>
                     </div>
                     <br>
                     <label for="img">Change profile picture:</label><br>
@@ -109,22 +278,23 @@ session_start();
                     <div class="col-md-5">
                      
                     <label for="UserName">User Name</label>
-                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="User Name" required value="<?php
+                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="User Name" required pattern=".{4,20}"  title="4 to 20 characters"value="<?php
                       if (isset($_SESSION['username']))
                       {
                         echo $_SESSION['username'];
                       }
                     ?>">
                     <hr>
+
                     <label for="FirstName">First Name</label>
                     <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First Name" required value="<?php
                       if (isset($_SESSION['firstname']))
                       {
                         echo $_SESSION['firstname'];
                       }
-                    ?>">
-                           
+                    ?>">     
                     <hr>
+
                     <label for="LastName">Last Name</label>
                     <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Last Name" required pattern="[A-BD-Za-z0-9()._-‘]+" value="<?php
                       if (isset($_SESSION['lastname']))
@@ -132,14 +302,11 @@ session_start();
                         echo $_SESSION['lastname'];
                       }
                     ?>">
+                    <br> 
 
-                  <br>
-                  
-                    <button type="submit" class="btn btn-primary">Change settings</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
                     </div>
-                </form>  
-                
-                
+                </form>       
             </div>
         </div>
     </div>
@@ -163,14 +330,14 @@ session_start();
 
   var loadFile = function(event) {
     var output = document.getElementById('output');
-    if(event.target.files[0].size > 5242880){
+    if(event.target.files[0].size > 10485760){
        alert("File is too big!");
        event.target.value = "";
     }
     else {
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
+        //URL.revokeObjectURL(output.src) // free memory
         }
     }
   };

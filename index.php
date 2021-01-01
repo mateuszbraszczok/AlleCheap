@@ -51,15 +51,11 @@ session_start();
             <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('
-          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="pages/profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-        </svg> Your Profile</a>
-        
+        echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="pages/profile.php">
+        <img  src="pages/'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
         <li class="nav-item">
-          <a class="nav-link" href="pages/logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
-        </li>');
-        ?>
+          <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
+        </li>');?>
       </ul>
       </div>
     </nav>

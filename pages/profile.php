@@ -50,15 +50,11 @@ session_start();
             <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('
-          <a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-        </svg> Your Profile</a>
-        
+        echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php">
+        <img  src="'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
         <li class="nav-item">
           <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
-        </li>');
-        ?>
+        </li>');?>
       </ul>
       </div>
     </nav>
@@ -70,7 +66,7 @@ session_start();
     <div class="container" >   
         <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
             <div class="col-md-4 col-lg-5">
-                <img src="Profile_pictures/default.png" alt="" style="width:100%;">
+                <img class="img-thumbnail img img-responsive full-width" src="<?php echo($_SESSION['imgstatus']);?>" alt="" style="width:100%;">
                 <br><br>
                 <p style="text-align: center;"> ID : <?php echo($_SESSION['id']); ?></p>
                 <section class="mt-4 px-lg-3 " >
