@@ -4,6 +4,41 @@ session_start();
   {
     header("location: ../index.php");
   }
+  if(!isset($_SESSION['lat']) || !isset($_SESSION['lon']) )
+    {
+    require_once "dbconnect.php";
+
+    try 
+	  {
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      if ($result=$conn->connect_errno!=0)
+      {
+        throw new Exception(mysqli_connect_errno());
+      }
+      else
+      {
+        
+        $sql = $conn->query("SELECT * FROM userlocalization WHERE userID='".$_SESSION['id']."'");
+        if (!$sql) throw new Exception($conn->error);
+
+        $num_rows = $sql->num_rows; 
+        if ($num_rows == 1)
+        {
+          $row = $sql->fetch_assoc();
+          $_SESSION['lat'] = $row['Latitude'];
+          $_SESSION['lng'] = $row['Longitude'];
+        }
+      }  
+        
+		$conn->close();
+				
+    }
+	catch(Exception $e)
+	{
+		echo '<span style="color:red;">Server error! Please visit us later!</span>';
+		echo '<br />Info for devs: '.$e;
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

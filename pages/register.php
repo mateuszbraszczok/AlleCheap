@@ -88,12 +88,11 @@
             
           if ($conn->query("INSERT INTO users VALUES (NULL, '$FirstName', '$LastName', '$Username', '$email_address', '$pass_hash')"))
           {
-            $_SESSION['login'] = true;
             $_SESSION['username'] = $Username;
             $_SESSION['firstname'] = $FirstName;
             $_SESSION['lastname'] = $LastName;
             $_SESSION['email'] = $email_address;
-            header('Location: ../index.php');
+            header('Location: login.php');
           }
           else
           {

@@ -17,6 +17,9 @@ session_start();
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
   <title>AlleCheap</title>
+
+  
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -54,7 +57,7 @@ session_start();
         echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="pages/profile.php">
         <img  src="pages/'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
         <li class="nav-item">
-          <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
+          <a class="nav-link" href="pages/logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');?>
       </ul>
       </div>
@@ -63,7 +66,11 @@ session_start();
 
 
   <main>
+
     <?php echo("<br>Hello WORLD2") ?>
+    
+    
+
   </main>
 
 

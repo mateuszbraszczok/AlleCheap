@@ -124,7 +124,10 @@ session_start();
           {      
             $sql = "UPDATE userimg SET status='".$fileDestination."' WHERE userID=".$_SESSION['id'];      
             if (!$conn->query($sql)) throw new Exception($conn->error);
-            else $_SESSION['imgstatus']=$fileDestination;   
+            else{
+              $_SESSION['imgstatus']=$fileDestination;  
+            }
+              
             $wmax = 640;
           	$hmax = 640; 
             img_resize($fileDestination, $fileDestination, $wmax, $hmax, $fileActualExt);    
@@ -149,12 +152,7 @@ session_start();
   
   function img_resize($target, $newcopy, $w, $h, $ext) {
     list($w_orig, $h_orig) = getimagesize($target);
-   /* $scale_ratio = $w_orig / $h_orig;
-    if (($w / $h) > $scale_ratio) {
-           $w = $h * $scale_ratio;
-    } else {
-           $h = $w / $scale_ratio;
-    }*/
+
     $img = "";
     if ($ext == "gif"){ 
       $img = imagecreatefromgif($target);
@@ -213,7 +211,24 @@ session_start();
         height: 300px;
       }
     }
+    
 </style>
+<style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 500px;
+        width: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -271,7 +286,6 @@ session_start();
                     <div class="image">
                     <img id="output" class="img-thumbnail img img-responsive full-width"  src="<?php echo($_SESSION['imgstatus']);?>" style="  vertical-align:middle" /> <br><br>
                     </div>
-                    <br>
                     <label for="img">Change profile picture:</label><br>
                     <input type="file" accept="image/*" id="img" name="img" onchange="loadFile(event)">
                     </div>
@@ -306,8 +320,17 @@ session_start();
 
                     <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
                     </div>
-                </form>       
+                </form>      
             </div>
+              <br><br>
+              <form id="coordform" method="get" action="localization.php" >     
+                <hr style="height:4px;border-width:0;color:gray;background-color:gray">  
+                <div id='map'></div>
+                <input id="lat" name="lat" type="hidden" value="<?php if(isset($_SESSION['lat'])) echo $_SESSION['lat'];  else echo"51.327"; ?>">
+                <input id="lon" name="lon" type="hidden" value="<?php if(isset($_SESSION['lng'])) echo $_SESSION['lng'];  else echo"19.067"; ?>">
+                <br>
+                <button type="submit" name="submitcoord" class="btn btn-primary">Save your localization</button>
+            <form>
         </div>
     </div>
     <br>
@@ -342,6 +365,44 @@ session_start();
     }
   };
 </script>
+<script>
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 6,
+          center: { lat: 52, lng: 20 },
+        });
+        marker = new google.maps.Marker({
+          map,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          position: { lat: <?php if(isset($_SESSION['lat'])) echo $_SESSION['lat'];  else echo"51.327"; ?>, lng: <?php if(isset($_SESSION['lng'])) echo $_SESSION['lng'];  else echo"19.067"; ?> },
+        });
+        marker.addListener("click", toggleBounce);
+      }
+        
+      function toggleBounce() {
+        var lat = marker.getPosition().lat();
+        var lng = marker.getPosition().lng();
 
+        document.getElementById("lat").value=lat;
+        document.getElementById("lon").value=lng;
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+      }
+
+      google.maps.event.addListener(marker, 'dragend', function (event) {
+    document.getElementById("lat").value = this.getPosition().lat();
+ 
+});
+
+    </script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvMgbRpn3ebemcufEZEVIjTyeJZAWn6WY&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
 </body>
 </html>
