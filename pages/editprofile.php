@@ -149,6 +149,46 @@ session_start();
     }
   }
   }
+  if(!isset($_SESSION['lat']) || !isset($_SESSION['lon']) )
+    {
+    require_once "dbconnect.php";
+
+    try 
+	  {
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      if ($result=$conn->connect_errno!=0)
+      {
+        throw new Exception(mysqli_connect_errno());
+      }
+      else
+      {
+        
+        $sql = $conn->query("SELECT * FROM userlocalization WHERE userID='".$_SESSION['id']."'");
+        if (!$sql) throw new Exception($conn->error);
+
+        $num_rows = $sql->num_rows; 
+        if ($num_rows == 1)
+        {
+          $row = $sql->fetch_assoc();
+          $_SESSION['lat'] = $row['Latitude'];
+          $_SESSION['lng'] = $row['Longitude'];
+          $_SESSION['street_number'] = $row['street_number'];
+          $_SESSION['route'] = $row['street'];
+          $_SESSION['city'] = $row['city'];
+          $_SESSION['state'] = $row['region'];
+          $_SESSION['country'] = $row['country'];
+        }
+      }  
+        
+		$conn->close();
+				
+    }
+    catch(Exception $e)
+    {
+      echo '<span style="color:red;">Server error! Please visit us later!</span>';
+      echo '<br />Info for devs: '.$e;
+    }
+  }
   
   function img_resize($target, $newcopy, $w, $h, $ext) {
     list($w_orig, $h_orig) = getimagesize($target);
@@ -183,10 +223,11 @@ session_start();
   <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-Control" content="no-store" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
   <title>AlleCheap</title>
   <style>
     * {
@@ -210,6 +251,26 @@ session_start();
         width: 300px;
         height: 300px;
       }
+    }
+    hr.hr-text {
+      position: relative;
+      border: none;
+      height: 1px;
+      background: #999;
+    }
+    hr.hr-text::before {
+      content: attr(data-content);
+      display: inline-block;
+      background: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #999;
+      border-radius: 30rem;
+      padding: 0.2rem 2rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     
 </style>
@@ -263,8 +324,15 @@ session_start();
             <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php">
+        echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="profile.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img  src="'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="profile.php">My Account</a>
+          <a class="dropdown-item" href="editprofile.php">Edit Profile</a>
+          <a class="dropdown-item" href="editprofile.php">Selling Products</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="changeaccount.php">Change Account</a>
+        </div></li>
         <li class="nav-item">
           <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');?>
@@ -282,14 +350,15 @@ session_start();
             
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                   <div class="row ">
-                  <div class="col-md-7">
+                  <div class="col-md-6">
                     <div class="image">
                     <img id="output" class="img-thumbnail img img-responsive full-width"  src="<?php echo($_SESSION['imgstatus']);?>" style="  vertical-align:middle" /> <br><br>
+                    
                     </div>
                     <label for="img">Change profile picture:</label><br>
                     <input type="file" accept="image/*" id="img" name="img" onchange="loadFile(event)">
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                      
                     <label for="UserName">User Name</label>
                     <input type="text" class="form-control" id="UserName" name="UserName" placeholder="User Name" required pattern=".{4,20}"  title="4 to 20 characters"value="<?php
@@ -320,17 +389,64 @@ session_start();
 
                     <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
                     </div>
-                </form>      
+                </form>   
+                <section class="mt-4 px-lg-3">
+                            
+              <a href="profile.php" class="btn btn-outline-secondary btn-lg btn-block text-wrap">
+                <i class="fas fa-eye" aria-hidden="true"></i> View my profile
+              </a>
+
+            </section>   
             </div>
-              <br><br>
-              <form id="coordform" method="get" action="localization.php" >     
-                <hr style="height:4px;border-width:0;color:gray;background-color:gray">  
-                <div id='map'></div>
-                <input id="lat" name="lat" type="hidden" value="<?php if(isset($_SESSION['lat'])) echo $_SESSION['lat'];  else echo"51.327"; ?>">
-                <input id="lon" name="lon" type="hidden" value="<?php if(isset($_SESSION['lng'])) echo $_SESSION['lng'];  else echo"19.067"; ?>">
-                <br>
-                <button type="submit" name="submitcoord" class="btn btn-primary">Save your localization</button>
-            <form>
+            <br><br>
+            <hr data-content="Your address" class="hr-text"> 
+            <div class="container" style="border-style: solid; border-width: 1px; padding:20px; border-color: DarkGray;">  
+                
+              <div class="row ">
+                <div class="col-12 col-sm-4 text-truncate">
+                    <p style="margin-bottom:0px;"> Your Street : </p>
+                </div>
+                <div class="col-12 col-sm-8 text-truncate">
+                      <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['route'])) echo($_SESSION['route']. "  ".$_SESSION['street_number']); ?></p>
+                </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your City : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['city'])) echo($_SESSION['city']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your State : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['state'])) echo($_SESSION['state']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your Country : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['country'])) echo($_SESSION['country']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <form id="coordform" method="get" action="localization.php" >     
+                <!---<hr style="height:4px;border-width:0;color:gray;background-color:gray">  -->
+                      <div id='map'></div>
+                      <input id="lat" name="lat" type="hidden" value="<?php if(isset($_SESSION['lat'])) echo $_SESSION['lat'];  else echo"51.327"; ?>">
+                      <input id="lon" name="lon" type="hidden" value="<?php if(isset($_SESSION['lng'])) echo $_SESSION['lng'];  else echo"19.067"; ?>">
+                      <br>
+                      <button type="submit" name="submitcoord" class="btn btn-primary">Save your localization</button>
+                    <form>
+              </div>
         </div>
     </div>
     <br>
@@ -344,7 +460,7 @@ session_start();
       <span class="text-dark">Braszczok & Wojciechowski</span>
     </div>
   </footer>
-
+  <?php if(isset($_SESSION['maperror'])){ echo('<script>alert("'.$_SESSION['maperror'].'");</script>'); unset($_SESSION['maperror']);}?>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
@@ -368,8 +484,8 @@ session_start();
 <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 6,
-          center: { lat: 52, lng: 20 },
+          zoom: <?php if(isset($_SESSION['lat'])) echo "10";  else echo"6"; ?>,
+          center: { lat: <?php if(isset($_SESSION['lat'])) echo $_SESSION['lat'];  else echo"51.327"; ?>, lng: <?php if(isset($_SESSION['lng'])) echo $_SESSION['lng'];  else echo"19.067"; ?> },
         });
         marker = new google.maps.Marker({
           map,

@@ -27,18 +27,23 @@ session_start();
           $row = $sql->fetch_assoc();
           $_SESSION['lat'] = $row['Latitude'];
           $_SESSION['lng'] = $row['Longitude'];
+          $_SESSION['street_number'] = $row['street_number'];
+          $_SESSION['route'] = $row['street'];
+          $_SESSION['city'] = $row['city'];
+          $_SESSION['state'] = $row['region'];
+          $_SESSION['country'] = $row['country'];
         }
       }  
         
 		$conn->close();
 				
     }
-	catch(Exception $e)
-	{
-		echo '<span style="color:red;">Server error! Please visit us later!</span>';
-		echo '<br />Info for devs: '.$e;
+    catch(Exception $e)
+    {
+      echo '<span style="color:red;">Server error! Please visit us later!</span>';
+      echo '<br />Info for devs: '.$e;
+    }
   }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,11 +51,34 @@ session_start();
   <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="X-Ua-Compatible" content="IE=edge">
+  <meta http-equiv="Cache-Control" content="no-store" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
   <title>AlleCheap</title>
+  <style>
+    hr.hr-text {
+      position: relative;
+      border: none;
+      height: 1px;
+      background: #999;
+    }
+    hr.hr-text::before {
+      content: attr(data-content);
+      display: inline-block;
+      background: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #999;
+      border-radius: 30rem;
+      padding: 0.2rem 1rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -85,8 +113,16 @@ session_start();
             <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="profile.php">
+        echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="profile.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img  src="'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="profile.php">My Account</a>
+          <a class="dropdown-item" href="editprofile.php">Edit Profile</a>
+          <a class="dropdown-item" href="editprofile.php">Selling Products</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="changeaccount.php">Change Account</a>
+        </div></li>
+        
         <li class="nav-item">
           <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');?>
@@ -103,7 +139,7 @@ session_start();
             <div class="col-md-4 col-lg-5">
                 <img class="img-thumbnail img img-responsive full-width" src="<?php echo($_SESSION['imgstatus']);?>" alt="" style="width:100%;">
                 <br><br>
-                <p style="text-align: center;"> ID : <?php echo($_SESSION['id']); ?></p>
+                <p style="text-align: center; color:gray;"> ID : <?php echo($_SESSION['id']); ?></p>
                 <section class="mt-4 px-lg-3 " >
                     <a href="editprofile.php" class="btn btn-outline-secondary btn-lg btn-block text-truncate">
                         <i class="fas fa-pencil-alt" aria-hidden="true"></i>
@@ -147,6 +183,45 @@ session_start();
                         </div>
                         <div class="col-12 col-sm-8 text-truncate">
                             <p style="font-weight: bold; margin-bottom:0px;"> <?php echo($_SESSION['email']); ?></p>
+                        </div>
+                    </div> 
+                       
+                    <hr class="mt-1 mb-3"/>
+                    <br>  
+                    <hr data-content="Your address" class="hr-text"> 
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your Street : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['route'])) echo($_SESSION['route']. "  ".$_SESSION['street_number']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your City : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['city'])) echo($_SESSION['city']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your State : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['state'])) echo($_SESSION['state']); ?></p>
+                        </div>
+                    </div>      
+                    <hr class="mt-1 mb-3"/>
+                    <div class="row ">
+                        <div class="col-12 col-sm-4 text-truncate">
+                            <p style="margin-bottom:0px;"> Your Country : </p>
+                        </div>
+                        <div class="col-12 col-sm-8 text-truncate">
+                            <p style="font-weight: bold; margin-bottom:0px;"> <?php if(isset($_SESSION['country'])) echo($_SESSION['country']); ?></p>
                         </div>
                     </div>      
                     <hr class="mt-1 mb-3"/>

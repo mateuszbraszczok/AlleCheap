@@ -22,7 +22,13 @@ session_start();
 
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100" style="background-image: url(background.jpg); ;
+
+/* Center and scale the image nicely */
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;">
 
   <header> 
     <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -54,8 +60,15 @@ session_start();
             <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('<a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="navbar-brand" href="pages/profile.php">
+        echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="pages/profile.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img  src="pages/'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="pages/profile.php">My Account</a>
+          <a class="dropdown-item" href="pages/editprofile.php">Edit Profile</a>
+          <a class="dropdown-item" href="pages/editprofile.php">Selling Products</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="pages/changeaccount.php">Change Account</a>
+        </div></li>
         <li class="nav-item">
           <a class="nav-link" href="pages/logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');?>
@@ -64,22 +77,24 @@ session_start();
     </nav>
   </header>
 
+  <h1 style="text-align: center;">Welcome on our auction webpage</h1>
+  <div style="text-align: center;"> <a class="btn btn-secondary" href="#" role="button">Sell a product</a></div>
+  <br>
+  <div style="text-align: center;"> <a class="btn btn-secondary" href="#" role="button">Buy a product</a></div>
+  <footer class="bg-light text-center text-lg-start fixed-bottom" >
+    <div class=" p-3" style="background-color: rgba(0, 0, 0, 0.5)">
+      
+      <div class="container-fluid">   
+        <div class="row ">
+          <div class="col-sm-4 col-lg-4"></div>
+          <div class="col-sm-4 col-lg-4" >© 2021 Copyright:<span class="text-dark">Braszczok & Wojciechowski</span></div>
+          <div class="col-sm-4 col-lg-4 " style="text-align: center;" >Image by <a href="https://pixabay.com/users/mediamodifier-1567646/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2140604">Mediamodifier</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2140604">Pixabay</a>
+        </div>
+      </div>
 
-  <main>
 
-    <?php echo("<br>Hello WORLD2") ?>
-    
-    
-
-  </main>
-
-
-  <div class="wrapper flex-grow-1"></div>
-  <footer class="bg-light text-center text-lg-start">
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.3)">
-      © 2021 Copyright:
-      <span class="text-dark">Braszczok & Wojciechowski</span>
     </div>
+    
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
