@@ -42,7 +42,7 @@ background-size: cover;">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Auctions</a>
+            <a class="nav-link" href="pages/auction_list.php">Auctions</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="pages/sellform.php">Sell product</a>

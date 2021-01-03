@@ -10,6 +10,9 @@ session_start();
     $ProperData = true;
     $Title = test_input($_POST["Title"]);
     $Description = test_input($_POST["Description"]);
+   // echo('<p style="white-space:pre-wrap;">'.  $_POST["Description"].' </p>');
+    
+   // exit();
     $Category = test_input($_POST["Category"]);
     $Price = test_input($_POST["price"]);
     $Days = test_input($_POST["duration"]);
