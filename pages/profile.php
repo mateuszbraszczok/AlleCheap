@@ -118,7 +118,7 @@ session_start();
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="profile.php">My Account</a>
           <a class="dropdown-item" href="editprofile.php">Edit Profile</a>
-          <a class="dropdown-item" href="editprofile.php">Selling Products</a>
+          <a class="dropdown-item" href="sellingdashboard.php">Selling Products</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="changeaccount.php">Change Account</a>
         </div></li>
