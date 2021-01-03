@@ -22,10 +22,8 @@ session_start();
 
 </head>
 
-<body class="d-flex flex-column min-vh-100" style="background-image: url(background.jpg); ;
-
-/* Center and scale the image nicely */
-background-position: center center;
+<body  style="background-image: url(background.jpg); 
+background-position: center center;*/
 background-repeat: no-repeat;
 background-attachment: fixed;
 background-size: cover;">
@@ -47,7 +45,7 @@ background-size: cover;">
             <a class="nav-link" href="#">Auctions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link" href="pages/sellform.php">Sell product</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -65,7 +63,7 @@ background-size: cover;">
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="pages/profile.php">My Account</a>
           <a class="dropdown-item" href="pages/editprofile.php">Edit Profile</a>
-          <a class="dropdown-item" href="pages/editprofile.php">Selling Products</a>
+          <a class="dropdown-item" href="pages/sellingdashboard.php">Selling Products</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="pages/changeaccount.php">Change Account</a>
         </div></li>
@@ -76,12 +74,15 @@ background-size: cover;">
       </div>
     </nav>
   </header>
-
+<main>
   <h1 style="text-align: center;">Welcome on our auction webpage</h1>
   <div style="text-align: center;"> <a class="btn btn-secondary" href="#" role="button">Sell a product</a></div>
   <br>
   <div style="text-align: center;"> <a class="btn btn-secondary" href="#" role="button">Buy a product</a></div>
-  <footer class="bg-light text-center text-lg-start fixed-bottom" >
+  <div class="wrapper flex-grow-1"></div>
+  </main>
+  <footer class="bg-light text-center text-lg-start " style="position: absolute;
+  bottom: 0; width: 100%;" >
     <div class=" p-3" style="background-color: rgba(0, 0, 0, 0.5)">
       
       <div class="container-fluid">   

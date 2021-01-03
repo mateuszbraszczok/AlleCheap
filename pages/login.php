@@ -125,7 +125,7 @@
             <a class="nav-link" href="#">Auctions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link" href="sellform.php">Sell product</a>
           </li>
 
         </ul>
@@ -166,9 +166,12 @@
               echo($_SESSION['error']);
             ?>
             <br>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button><br>
+            <a href="register.php"><small> Don't have an account? Just register!</small></a>
             </fieldset>
           </form>
+          
+          
         </div>
         <div class="col-sm-2 col-lg-3"></div>
     </div>
