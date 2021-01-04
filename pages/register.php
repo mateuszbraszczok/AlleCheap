@@ -158,7 +158,7 @@
             <a class="nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Auctions</a>
+            <a class="nav-link" href="auction_list.php">Auctions</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="sellform.php">Sell product</a>
