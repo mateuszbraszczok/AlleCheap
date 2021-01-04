@@ -76,9 +76,9 @@ background-size: cover;">
   </header>
 <main>
   <h1 style="text-align: center;">Welcome on our auction webpage</h1>
-  <div style="text-align: center;"> <a class="btn btn-secondary" href="#" role="button">Sell a product</a></div>
+  <div style="text-align: center;"> <a class="btn btn-secondary" href="pages/sellform" role="button">Sell a product</a></div>
   <br>
-  <div style="text-align: center;"> <a class="btn btn-secondary" href="#" role="button">Buy a product</a></div>
+  <div style="text-align: center;"> <a class="btn btn-secondary" href="pages/auction_list" role="button">Buy a product</a></div>
   <div class="wrapper flex-grow-1"></div>
   </main>
   <footer class="bg-light text-center text-lg-start " style="position: absolute;
