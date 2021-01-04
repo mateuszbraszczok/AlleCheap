@@ -3,7 +3,7 @@
   session_start();
   
   if (isset($_SESSION['login']))
-    header("location: ../index.php");
+    header("location: ../");
 
     if ((isset($_POST['username'])) && (isset($_POST['pass'])))
     { 
@@ -64,7 +64,7 @@
                   
                 unset($_SESSION['error']);
                 $result->free_result();
-                header("location: ../index.php");
+                header("location: ../");
               }
               else 
               {
@@ -110,7 +110,7 @@
 
   <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a style="margin-left:15px;" class="navbar-brand" href="../index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+      <a style="margin-left:15px;" class="navbar-brand" href="../"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
       </svg> AlleCheap</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,13 +119,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="../">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="auction_list.php">Auctions</a>
+            <a class="nav-link" href="auction_list">Auctions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="sellform.php">Sell product</a>
+            <a class="nav-link" href="sellform">Sell product</a>
           </li>
 
         </ul>
@@ -134,7 +134,7 @@
           <a class="nav-link"><button type="button" class="btn btn-primary">Login</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="register.php"><button type="button" class="btn btn-success">Sign In</button></a>
+          <a class="nav-link" href="register"><button type="button" class="btn btn-success">Sign In</button></a>
         </li>
       </ul>
       </div>
@@ -167,7 +167,7 @@
             ?>
             <br>
             <button type="submit" class="btn btn-primary">Login</button><br>
-            <a href="register.php"><small> Don't have an account? Just register!</small></a>
+            <a href="register"><small> Don't have an account? Just register!</small></a>
             </fieldset>
           </form>
           

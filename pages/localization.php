@@ -2,11 +2,11 @@
     session_start();
     if (!isset($_SESSION['login']))
     {
-        header("location: ../index.php");
+        header("location: ../");
     }
     if(!isset($_GET['lat']) || !isset($_GET['lon']) )
     {
-        header("location: ../index.php");
+        header("location: ../");
     }
 
     $lat= $_GET['lat'];
@@ -31,7 +31,7 @@
         if($json_result->results[0]->address_components[0]->types[0] !="street_number")
         {
           $_SESSION['maperror']="nie ma takiego adresu";
-          header('Location: editprofile.php');
+          header('Location: editprofile');
         }
         $street_number = $json_result->results[0]->address_components[0]->long_name;
         
@@ -39,7 +39,7 @@
         $route = mb_convert_encoding($route, "UTF-8");
         $i =2;
         while (($json_result->results[0]->address_components[$i]->types[0] !="locality") && ($json_result->results[0]->address_components[$i]->types[0] !="administrative_area_level_2"))  {$i++; if($i>5){$_SESSION['maperror']="nie ma takiego adresu";
-          header('Location: editprofile.php'); }}
+          header('Location: editprofile'); }}
         if($json_result->results[0]->address_components[$i+1]->types[0] =="administrative_area_level_2") $i++;
         $city = $json_result->results[0]->address_components[$i]->long_name;
         $state = $json_result->results[0]->address_components[$i+1]->long_name;
@@ -81,7 +81,7 @@
         $_SESSION['city'] = $city;
         $_SESSION['state'] = $state;
         $_SESSION['country'] = $country;
-        header('Location: editprofile.php');
+        header('Location: editprofile');
 		$conn->close();
 				
       }

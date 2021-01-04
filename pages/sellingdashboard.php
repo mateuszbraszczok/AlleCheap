@@ -2,7 +2,7 @@
 session_start();
   if (!isset($_SESSION['login']))
   {
-    header("location: login.php");
+    header("location: login");
   }
  ?> 
 
@@ -30,7 +30,7 @@ session_start();
 
   <header> 
     <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a style="margin-left:15px;" class="navbar-brand" href="../index.php"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+      <a style="margin-left:15px;" class="navbar-brand" href="../"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
       </svg> AlleCheap</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,36 +39,36 @@ session_start();
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="../">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="auction_list.php">Auctions</a>
+            <a class="nav-link" href="auction_list">Auctions</a>
           </li>
           <li class="nav-item">
-          <a class="nav-link" href="sellform.php">Sell product</a>
+          <a class="nav-link" href="sellform">Sell product</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
         <?php 
         if (!isset($_SESSION['login']))
           echo('<li class="nav-item">
-            <a class="nav-link" href="pages/login.php"><button type="button" class="btn btn-primary">Login</button></a>
+            <a class="nav-link" href="pages/login"><button type="button" class="btn btn-primary">Login</button></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/register.php"><button type="button" class="btn btn-success">Sign In</button></a>
+            <a class="nav-link" href="pages/register"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
-        echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="profile.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="profile" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img  src="'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="profile.php">My Account</a>
-          <a class="dropdown-item" href="editprofile.php">Edit Profile</a>
-          <a class="dropdown-item" href="sellingdashboard.php">Selling Products</a>
+          <a class="dropdown-item" href="profile">My Account</a>
+          <a class="dropdown-item" href="editprofile">Edit Profile</a>
+          <a class="dropdown-item" href="sellingdashboard">Selling Products</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="changeaccount.php">Change Account</a>
+          <a class="dropdown-item" href="changeaccount">Change Account</a>
         </div></li>
         <li class="nav-item">
-          <a class="nav-link" href="logout.php"><button type="button" class="btn btn-danger">Logout</button></a>
+          <a class="nav-link" href="logout"><button type="button" class="btn btn-danger">Logout</button></a>
         </li>');?>
       </ul>
       </div>
@@ -110,15 +110,15 @@ session_start();
                                 
                         while($row = mysqli_fetch_array($result))
                         {
-                            echo "<tr  onclick='window.location'=login.php>";
+                            echo "<tr  onclick='window.location'=login>";
                             $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
                             //echo $sql   ;
                             $result2=$conn->query($sql);
                             if (!$result2) throw new Exception($conn->error);
                             $row2 = mysqli_fetch_array($result2);
 
-                            echo "<td scope='row'><a href='auction.php?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
-                            echo "<td><a href='auction.php?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
                             echo "<td>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
@@ -157,15 +157,15 @@ session_start();
 
                         while($row = mysqli_fetch_array($result))
                         {
-                            echo "<tr  onclick='window.location'=login.php>";
+                            echo "<tr  onclick='window.location'=login>";
                             $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
                             //echo $sql   ;
                             $result2=$conn->query($sql);
                             if (!$result2) throw new Exception($conn->error);
                             $row2 = mysqli_fetch_array($result2);
 
-                            echo "<td scope='row'><a href='login.php'><img src='" . $row2['Directory'] . "' width=120></a></td>";
-                            echo "<td><a href='login.php'>" . $row['Title'] . "</a></td>";
+                            echo "<td scope='row'><a href='login'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<td><a href='login'>" . $row['Title'] . "</a></td>";
                             echo "<td>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
@@ -203,15 +203,15 @@ session_start();
 
                         while($row = mysqli_fetch_array($result))
                         {
-                            echo "<tr  onclick='window.location'=login.php>";
+                            echo "<tr  onclick='window.location'=login>";
                             $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
                             //echo $sql   ;
                             $result2=$conn->query($sql);
                             if (!$result2) throw new Exception($conn->error);
                             $row2 = mysqli_fetch_array($result2);
 
-                            echo "<td scope='row'><a href='login.php'><img src='" . $row2['Directory'] . "' width=120></a></td>";
-                            echo "<td><a href='login.php'>" . $row['Title'] . "</a></td>";
+                            echo "<td scope='row'><a href='login'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<td><a href='login'>" . $row['Title'] . "</a></td>";
                             echo "<td>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
