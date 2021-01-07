@@ -141,7 +141,7 @@ session_start();
                 <?php
                     try 
                     {    
-                        $sql = "SELECT * FROM auctions WHERE EndDate < now() AND SellerID ='". $_SESSION['id']."'";      
+                        $sql = "SELECT * FROM auctions WHERE EndDate < now() AND WinnerID <>'0' AND SellerID ='". $_SESSION['id']."'";      
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">

@@ -1,6 +1,7 @@
 <?php
 
   session_start();
+
   
   if (isset($_SESSION['login']))
     header("location: ../");
@@ -64,7 +65,17 @@
                   
                 unset($_SESSION['error']);
                 $result->free_result();
-                header("location: ../");
+                if(isset($_SESSION['from']))
+                {
+                  $from=$_SESSION['from'];
+                  unset($_SESSION['from']);
+                  header("location: ".$from."");
+                }
+                else
+                {
+                  header("location: ../");
+                }
+                
               }
               else 
               {

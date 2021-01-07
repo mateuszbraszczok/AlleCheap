@@ -1,7 +1,8 @@
 <?php 
 session_start();
-  if (!isset($_SESSION['login']))
+  if (!isset($_SESSION['login'])) 
   {
+    $_SESSION['from']="sellform";
     header("location: login");
   }
   
@@ -223,13 +224,13 @@ session_start();
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link" href="../">Home </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="auction_list">Auctions</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
           <a class="nav-link" href="sellform">Sell product<span class="sr-only">(current)</span></a>
           </li>
         </ul>
