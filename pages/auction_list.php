@@ -127,7 +127,7 @@ session_start();
 
                             echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                            echo "<td>" . $row3['username'] . "</td>";
+                            echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
                             echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";

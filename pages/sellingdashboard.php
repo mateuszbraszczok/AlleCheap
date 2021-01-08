@@ -102,6 +102,7 @@ session_start();
                                 <tr>
                                 <th scope="col">Picture</th>
                                 <th scope="col">Title</th>
+                                <th scope="col">Current Winner</th>
                                 <th scope="col">End Time</th>
                                 <th scope="col">Price [PLN]</th>
                                 </tr>
@@ -116,9 +117,19 @@ session_start();
                             $result2=$conn->query($sql);
                             if (!$result2) throw new Exception($conn->error);
                             $row2 = mysqli_fetch_array($result2);
+                            
 
+                            $sql = "SELECT username FROM users WHERE ID='". $row['WinnerID']."'";   
+                            //echo $sql   ;
+                            $result3=$conn->query($sql);
+                            if (!$result3) throw new Exception($conn->error);
+                            $row3 = mysqli_fetch_array($result3);
                             echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                            if(isset($row3['username']))
+                              echo "<td>"  .$row3['username'].  "</td>";
+                            else
+                              echo "<td>.......</td>";
                             echo "<td>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
@@ -149,29 +160,40 @@ session_start();
                                 <tr>
                                 <th scope="col">Picture</th>
                                 <th scope="col">Title</th>
+                                <th scope="col">Winner</th>
                                 <th scope="col">End Time</th>
                                 <th scope="col">Price [PLN]</th>
                                 </tr>
                             </thead>
                             <tbody>';
 
-                        while($row = mysqli_fetch_array($result))
-                        {
-                            echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
-
-                            echo "<td scope='row'><a href='login'><img src='" . $row2['Directory'] . "' width=120></a></td>";
-                            echo "<td><a href='login'>" . $row['Title'] . "</a></td>";
-                            echo "<td>" . $row['EndDate'] . "</td>";
-                            echo "<td>" . $row['Price'] . "</td>";
-                            echo "</a></tr>";
-                        }
-                        echo "</tbody></table> </div>";                       
-                    }	            
+                            while($row = mysqli_fetch_array($result))
+                            {
+                                echo "<tr  onclick='window.location'=login>";
+                                $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
+                                //echo $sql   ;
+                                $result2=$conn->query($sql);
+                                if (!$result2) throw new Exception($conn->error);
+                                $row2 = mysqli_fetch_array($result2);
+                                
+    
+                                $sql = "SELECT username FROM users WHERE ID='". $row['WinnerID']."'";   
+                                //echo $sql   ;
+                                $result3=$conn->query($sql);
+                                if (!$result3) throw new Exception($conn->error);
+                                $row3 = mysqli_fetch_array($result3);
+                                echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                                echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                                if(isset($row3['username']))
+                                  echo "<td>"  .$row3['username'].  "</td>";
+                                else
+                                  echo "<td>.......</td>";
+                                echo "<td>" . $row['EndDate'] . "</td>";
+                                echo "<td>" . $row['Price'] . "</td>";
+                                echo "</a></tr>";
+                            }
+                            echo "</tbody></table> </div>";                                         
+                          }	           
                     catch(Exception $e)
                     {
                       echo '<span style="color:red;">Server error! Please visit us later!</span>';

@@ -308,7 +308,7 @@ session_start();
                             <div class="form-group ">
                               <label for="price" >Starting price [PLN]</label>
                               <div >
-                                <input class="form-control col-md-2" type="number" placeholder="0.00" max="999999" id="price" name="price" step=".01" min="0" required pattern="^\d+(?:\.\d{1,2})?$" onkeypress="return isNumeric(event)" > 
+                                <input class="form-control col-md-2" type="number" placeholder="0.00" data-decimals="2" max="999999" id="price" name="price" step=".01" min="0" required pattern="^\d+(?:\.\d{1,2})?$" onkeypress="return isNumeric(event)" > 
                               </div>
                             </div>
                             <hr> 
