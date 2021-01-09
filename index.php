@@ -63,7 +63,9 @@ background-size: cover;">
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="pages/profile">My Account</a>
           <a class="dropdown-item" href="pages/editprofile">Edit Profile</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="pages/sellingdashboard">Selling Products</a>
+          <a class="dropdown-item" href="pages/buyingdashboard">Buying Products</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="pages/changeaccount">Change Account</a>
         </div></li>

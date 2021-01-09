@@ -18,6 +18,7 @@ session_start();
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
   <title>AlleCheap</title>
+  
   <style>
     * {
       box-sizing: border-box;
@@ -63,7 +64,9 @@ session_start();
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="profile">My Account</a>
           <a class="dropdown-item" href="editprofile">Edit Profile</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="sellingdashboard">Selling Products</a>
+          <a class="dropdown-item" href="buyingdashboard">Buying Products</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="changeaccount">Change Account</a>
         </div></li>
@@ -127,7 +130,9 @@ session_start();
                             echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
                             if(isset($row3['username']))
-                              echo "<td>"  .$row3['username'].  "</td>";
+                             // echo "<td>"  .$row3['username'].  "</td>";
+                              echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row3['username']. "</a></td>";
+                              
                             else
                               echo "<td>.......</td>";
                             echo "<td>" . $row['EndDate'] . "</td>";
@@ -185,7 +190,8 @@ session_start();
                                 echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
                                 echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
                                 if(isset($row3['username']))
-                                  echo "<td>"  .$row3['username'].  "</td>";
+                                 // echo "<td>"  .$row3['username'].  "</td>";
+                                  echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row3['username']. "</a></td>";
                                 else
                                   echo "<td>.......</td>";
                                 echo "<td>" . $row['EndDate'] . "</td>";

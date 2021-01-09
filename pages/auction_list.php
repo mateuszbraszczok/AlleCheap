@@ -18,6 +18,7 @@ session_start();
   <script src='https://kit.fontawesome.com/a076d05399.js'></script>
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+
   <title>AlleCheap</title>
   <style>
     * {
@@ -64,7 +65,9 @@ session_start();
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="profile">My Account</a>
           <a class="dropdown-item" href="editprofile">Edit Profile</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="sellingdashboard">Selling Products</a>
+          <a class="dropdown-item" href="buyingdashboard">Buying Products</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="changeaccount">Change Account</a>
         </div></li>
@@ -75,76 +78,74 @@ session_start();
       </div>
     </nav>
   </header>
-
   <main>
     <br>
     <div class="container-fluid" >   
-        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
-            <div class="col-md">
-                <h1>Selling Items</h1>
-                <?php
-                    require_once "dbconnect.php";
+      <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+        <div class="col-md">
+          <h1>Selling Items</h1>
+          <?php
+            require_once "dbconnect.php";
 
-                    try 
-                    {
-                      $conn = new mysqli($servername, $username, $password, $dbname);
-                      if ($conn->connect_errno!=0)
-                      {
-                        throw new Exception(mysqli_connect_errno());
-                      }
-                      else
-                      {      
-                        $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."'";      
-                        $result=$conn->query($sql);
-                        if (!$result) throw new Exception($conn->error);
-                        echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                <th scope="col">Picture</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Seller</th>
-                                <th scope="col">End Time</th>
-                                <th scope="col">Price [PLN]</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-                                
-                        while($row = mysqli_fetch_array($result))
-                        {
-                            echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
+            try 
+            {
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_errno!=0)
+              {
+                throw new Exception(mysqli_connect_errno());
+              }
+              else
+              {      
+                $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."'";      
+                $result=$conn->query($sql);
+                if (!$result) throw new Exception($conn->error);
+                echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
+                  <thead>
+                    <tr>
+                    <th scope="col">Picture</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Seller</th>
+                    <th scope="col">End Time</th>
+                    <th scope="col">Price [PLN]</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+                        
+                while($row = mysqli_fetch_array($result))
+                {
+                  echo "<tr  onclick='window.location'=login>";
+                  $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
+                  //echo $sql   ;
+                  $result2=$conn->query($sql);
+                  if (!$result2) throw new Exception($conn->error);
+                  $row2 = mysqli_fetch_array($result2);
 
 
-                            $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
-                            //echo $sql   ;
-                            $result3=$conn->query($sql);
-                            if (!$result3) throw new Exception($conn->error);
-                            $row3 = mysqli_fetch_array($result3);
+                  $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
+                  //echo $sql   ;
+                  $result3=$conn->query($sql);
+                  if (!$result3) throw new Exception($conn->error);
+                  $row3 = mysqli_fetch_array($result3);
 
-                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
-                            echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                            echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
-                            echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
-                            echo "<td>" . $row['Price'] . "</td>";
-                            echo "</a></tr>";
-                        }
-                        echo "</tbody></table> </div>";                                         
-                      }	
-                    }
-                    catch(Exception $e)
-                    {
-                      echo '<span style="color:red;">Server error! Please visit us later!</span>';
-                      echo '<br />Info for devs: '.$e;
-                    }               
-                ?>                 
-            </div>       
-        </div>
-        
-              
+                  echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                  echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                  echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
+                  echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
+                  echo "<td>" . $row['Price'] . "</td>";
+                  echo "</a></tr>";
+                }
+                echo "</tbody></table> </div>";                                         
+              }	
+            }
+            catch(Exception $e)
+            {
+              echo '<span style="color:red;">Server error! Please visit us later!</span>';
+              echo '<br />Info for devs: '.$e;
+            }               
+          ?>                 
+        </div>       
+      </div>
+       
     </div>
     <br>
   </main>

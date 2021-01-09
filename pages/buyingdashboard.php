@@ -4,52 +4,8 @@ session_start();
   {
     header("location: login");
   }
-  if (!isset($_GET['id']) )
-  {
-    header("location: ../");
-  }
-  
  ?> 
- <?php
-              require_once "dbconnect.php";
-              $product_id = $_GET['id'];
-              try 
-              {
-                $conn = new mysqli($servername, $username, $password, $dbname);
-                if ($conn->connect_errno!=0)
-                {
-                  throw new Exception(mysqli_connect_errno());
-                }
-                else
-                {      
-                  $sql = "SELECT * FROM auctions WHERE ID= '$product_id'";      
-                  $result=$conn->query($sql);
-                  if (!$result) throw new Exception($conn->error);
-                  $row = mysqli_fetch_array($result);
-                  $date1 = new DateTime();
-                  $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
-                  if ( $date2 < $date1 )
-                  {
-                  // header_remove("location"); 
 
-                  header("location: ../");
-                  
-                  }
-                  $diff = $date1->diff($date2);
-                  $sql2 = "SELECT * FROM auctionimg WHERE auctionID= '$product_id'";      
-                  $result2=$conn->query($sql2);
-                  if (!$result2) throw new Exception($conn->error);
-                  $row2 = mysqli_fetch_array($result2);
-                  //echo($row2['Directory']);
-
-                }	
-              }
-              catch(Exception $e)
-              {
-                echo '<span style="color:red;">Server error! Please visit us later!</span>';
-                echo '<br />Info for devs: '.$e;
-              }               
-              ?>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,45 +22,7 @@ session_start();
     * {
       box-sizing: border-box;
     }
-
-    
-    hr.hr-text {
-      position: relative;
-      border: none;
-      height: 1px;
-      background: #999;
-    }
-    hr.hr-text::before {
-      content: attr(data-content);
-      display: inline-block;
-      background: #fff;
-      font-weight: bold;
-      font-size: 1rem;
-      color: #999;
-      border-radius: 30rem;
-      padding: 0.2rem 2rem;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
-    }
-    input[type="file"] {
-     display: none;
-    }
-    .custom-file-upload {
-        border: 1px solid #ccc;
-        text-align:center;
-        padding: 6px 12px;
-        cursor: pointer;
-    }
-    
-</style>
+    </style>
 
 </head>
 
@@ -142,7 +60,7 @@ session_start();
         else
         echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="profile" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img  src="'.$_SESSION['imgstatus'].'" style="width:40px; height:40px;"/>     Your Profile</a>  
-       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="profile">My Account</a>
           <a class="dropdown-item" href="editprofile">Edit Profile</a>
           <div class="dropdown-divider"></div>
@@ -159,56 +77,13 @@ session_start();
     </nav>
   </header>
 
-
   <main>
     <br>
-    <div class="container" style="border-style: solid; border-width: 1px; padding:30px; margin-bottom:50px; ">   
-        <div class="row " >
-          <div class="col-md-6">
-            
-                <img class="img-thumbnail img img-responsive " src="<?php echo($row2['Directory']);?>" alt="product_picture" style="width:100%;">
-                  <br> 
-                  <br>               
-          </div>
-            
-          <div class="col-md-6">
-              <div>
-                <h4>Title</h4>
-                <?php echo($row['Title']);?>
-                <br><br><small>To End</small><br>
-                <strong><?php echo($diff->format('%d days, %h hours %i min'));?> </strong>
-                <br><br><small>Actual Price</small><br>
-                <strong><?php echo($row['Price']);?> PLN</strong>
-                <br><br>
-              </div>
-              <?php if ($_SESSION['id'] != $row['SellerID']) { ?>
-              <form method="post" action="bid" enctype="multipart/form-data">
-                <div class="form-group ">
-                <label for="price" >Your Bid [PLN]</label>
-                  <div>
-                  <input type="hidden" id="id" name="id" value="<?php echo($_GET['id']);?>">
-                  <input class="form-control col-md-2" type="number" value="<?php echo($row['Price']+0.5);?>" data-decimals="2" max="999999" id="price" name="price" step=".1" min="<?php echo($row['Price']+0.5);?>" required pattern="^\d+(?:\.\d{1,2})?$" onkeypress="return isNumeric(event)" > 
-                  </div>
-                </div>
-                <button type="submit" name="submit" class="btn btn-outline-info">Make a Bid</button>
-
-              </form>
-              <?php } ?>
-            </div>
-            </div>
-            <div class="row " style="margin-top:50px;">
-              <div class="col-md-12">
-                <h3>Description</h3><br>
-                <p style="white-space:pre-wrap; background-color:#e6e6e6; padding :30px;"><?php echo($row['Descript']);?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row " style="margin-top:50px;">
-              <div class="col-md-12">
-                <div style="margin:auto;
-                    vertical-align:middle;">
-                    <h3>Bid history</h3>
-                    <?php
+    <div class="container-fluid" >   
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+            <div class="col-md">
+                <h1>Winning Items</h1>
+                <?php
                     require_once "dbconnect.php";
 
                     try 
@@ -220,14 +95,17 @@ session_start();
                       }
                       else
                       {      
-                        $sql = "SELECT * FROM bidding WHERE auctionID ='". $_GET['id']."' ORDER BY time DESC";      
+                        $sql = "SELECT * FROM auctions WHERE EndDate > now() AND WinnerID ='". $_SESSION['id']."'";
+                        //echo $sql;     
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>
-                                <th scope="col">DateTime</th>
-                                <th scope="col">Bidder</th>
+                                <th scope="col">Picture</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Sellerr</th>
+                                <th scope="col">End Time</th>
                                 <th scope="col">Price [PLN]</th>
                                 </tr>
                             </thead>
@@ -236,15 +114,28 @@ session_start();
                         while($row = mysqli_fetch_array($result))
                         {
                             echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT username FROM users WHERE ID='". $row['buyerID']."'";   
+                            $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
                             //echo $sql   ;
                             $result2=$conn->query($sql);
                             if (!$result2) throw new Exception($conn->error);
                             $row2 = mysqli_fetch_array($result2);
+                            
 
-                            echo "<td style='white-space:nowrap;'>" . $row['time'] . "</td>";
-                            echo "<td>" . $row2['username'] . "</td>";
-                            echo "<td>" . $row['bidprice'] . "</td>";
+                            $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
+                            //echo $sql   ;
+                            $result3=$conn->query($sql);
+                            if (!$result3) throw new Exception($conn->error);
+                            $row3 = mysqli_fetch_array($result3);
+                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                            if(isset($row3['username']))
+                             // echo "<td>"  .$row3['username'].  "</td>";
+                              echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
+                              
+                            else
+                              echo "<td>.......</td>";
+                            echo "<td>" . $row['EndDate'] . "</td>";
+                            echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
                         }
                         echo "</tbody></table> </div>";                                         
@@ -255,14 +146,68 @@ session_start();
                       echo '<span style="color:red;">Server error! Please visit us later!</span>';
                       echo '<br />Info for devs: '.$e;
                     }               
-                ?>               
-                </div>
-              </div>
-            </div>
+                ?>                 
+            </div>       
         </div>
-    </div>
+        <br>
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+            <div class="col-md">
+                <h1>Bought Items</h1>
+                <?php
+                    try 
+                    {    
+                        $sql = "SELECT * FROM auctions WHERE EndDate < now() AND WinnerID <>'0' AND WinnerID ='". $_SESSION['id']."'";      
+                        $result=$conn->query($sql);
+                        if (!$result) throw new Exception($conn->error);
+                        echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                <th scope="col">Picture</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Seller</th>
+                                <th scope="col">End Time</th>
+                                <th scope="col">Price [PLN]</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
 
-             
+                            while($row = mysqli_fetch_array($result))
+                            {
+                                echo "<tr  onclick='window.location'=login>";
+                                $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
+                                //echo $sql   ;
+                                $result2=$conn->query($sql);
+                                if (!$result2) throw new Exception($conn->error);
+                                $row2 = mysqli_fetch_array($result2);
+                                
+    
+                                $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
+                                //echo $sql   ;
+                                $result3=$conn->query($sql);
+                                if (!$result3) throw new Exception($conn->error);
+                                $row3 = mysqli_fetch_array($result3);
+                                echo "<td scope='row'><a href='bought?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                                echo "<td><a href='bought?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                                if(isset($row3['username']))
+                                 // echo "<td>"  .$row3['username'].  "</td>";
+                                  echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
+                                else
+                                  echo "<td>.......</td>";
+                                echo "<td>" . $row['EndDate'] . "</td>";
+                                echo "<td>" . $row['Price'] . "</td>";
+                                echo "</a></tr>";
+                            }
+                            echo "</tbody></table> </div>";                                         
+                          }	           
+                    catch(Exception $e)
+                    {
+                      echo '<span style="color:red;">Server error! Please visit us later!</span>';
+                      echo '<br />Info for devs: '.$e;
+                    }       
+                ?>
+            </div>       
+        </div>
+    <br>
   </main>
 
 

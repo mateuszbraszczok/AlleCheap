@@ -150,7 +150,9 @@ session_start();
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="profile">My Account</a>
           <a class="dropdown-item" href="editprofile">Edit Profile</a>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="sellingdashboard">Selling Products</a>
+          <a class="dropdown-item" href="buyingdashboard">Buying Products</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="changeaccount">Change Account</a>
         </div></li>
