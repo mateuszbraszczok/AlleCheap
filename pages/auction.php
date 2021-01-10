@@ -162,7 +162,7 @@ session_start();
 
   <main>
     <br>
-    <div class="container" style="border-style: solid; border-width: 1px; padding:30px; margin-bottom:50px; ">   
+    <div class="container" style="border-style: solid; border-width: 1px; padding:30px; margin-bottom:50px; border-radius: 5px; ">   
         <div class="row " >
           <div class="col-md-6">
             

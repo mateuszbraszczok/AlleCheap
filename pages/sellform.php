@@ -267,7 +267,7 @@ session_start();
   <main>
     <br>
     <div class="container" >   
-        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md">
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                     <div class="row justify-content-center">

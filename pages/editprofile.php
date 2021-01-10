@@ -354,7 +354,7 @@ session_start();
   <main>
     <br>
     <div class="container" >   
-        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md">
             
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
@@ -414,7 +414,7 @@ session_start();
             </div>
             <br><br>
             <hr data-content="Your address" class="hr-text"> 
-            <div class="container" style="border-style: solid; border-width: 1px; padding:20px; border-color: DarkGray;">  
+            <div class="container" style="border-style: solid; border-width: 1px; padding:20px; border-color: DarkGray; border-radius: 5px;">  
                 
               <div class="row ">
                 <div class="col-12 col-sm-4 text-truncate">

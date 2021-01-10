@@ -80,7 +80,7 @@ session_start();
   <main>
     <br>
     <div class="container-fluid" >   
-        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md">
                 <h1>Winning Items</h1>
                 <?php
@@ -150,7 +150,7 @@ session_start();
             </div>       
         </div>
         <br>
-        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md">
                 <h1>Bought Items</h1>
                 <?php

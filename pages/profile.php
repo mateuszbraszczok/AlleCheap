@@ -137,7 +137,7 @@ session_start();
   <main>
     <br>
     <div class="container" >   
-        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
+        <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md-4 col-lg-5">
                 <img class="img-thumbnail img img-responsive full-width" src="<?php echo($_SESSION['imgstatus']);?>" alt="" style="width:100%;">
                 <br><br>
@@ -151,7 +151,7 @@ session_start();
                 </section>
             </div>
             <div class="col-md-8 col-lg-7">
-                <div class="container" style="border-style: solid; border-width: 1px; padding:20px; border-color: DarkGray;">   
+                <div class="container" style="border-style: solid; border-width: 1px; padding:20px; border-color: DarkGray; border-radius: 5px;">   
                     <div class="row ">
                         <div class="col-12 col-sm-4 text-truncate">
                             <p style="margin-bottom:0px;"> Your Username : </p>

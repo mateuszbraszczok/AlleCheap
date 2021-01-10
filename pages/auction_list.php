@@ -91,8 +91,8 @@ session_start();
   <main>
     <br>
     <div class="container-fluid" >   
-      <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
-        <div class="col-md-2">
+      <div class="row " style="border-style: solid; border-width: 1px;  padding:15px; margin:1px; border-radius: 5px;" >
+        <div class="col-md-2" style="border-style: solid; border-width: 1px; border-color: lightgray; border-radius: 5px;">
         <h4>Choose Category:</h4>
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
           <div class="form-check">

@@ -160,7 +160,7 @@
         <div class="col-sm-2 col-lg-3"></div>
         <div class="col-sm-8 col-lg-6" >
           <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <fieldset style=" padding:20px; border: 1px solid lightgray;">
+            <fieldset style=" padding:20px; border: 1px solid lightgray; border-radius: 5px;">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter your username" required>

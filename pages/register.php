@@ -185,7 +185,7 @@
         <div class="col-sm-1 col-lg-2"></div>      
         <div class="col-sm-9 col-lg-7" >
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-          <fieldset style=" padding:20px; border: 1px solid lightgray;">
+          <fieldset style=" padding:20px; border: 1px solid lightgray; border-radius: 5px;">
           <form>
           <div class="form-row">
               <div class="form-group col-md-6">
