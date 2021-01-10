@@ -173,8 +173,8 @@ session_start();
             
           <div class="col-md-6">
               <div>
-                <h4>Title</h4>
-                <?php echo($row['Title']);?>
+                <h7>Title</h7>
+                <h4><?php echo($row['Title']);?></h4>
                 <br><br><small>To End</small><br>
                 <strong><?php echo($diff->format('%d days, %h hours %i min'));?> </strong>
                 <br><br><small>Actual Price</small><br>
@@ -187,7 +187,7 @@ session_start();
                 <label for="price" >Your Bid [PLN]</label>
                   <div>
                   <input type="hidden" id="id" name="id" value="<?php echo($_GET['id']);?>">
-                  <input class="form-control col-md-2" type="number" value="<?php echo($row['Price']+0.5);?>" data-decimals="2" max="999999" id="price" name="price" step=".1" min="<?php echo($row['Price']+0.5);?>" required pattern="^\d+(?:\.\d{1,2})?$" onkeypress="return isNumeric(event)" > 
+                  <input class="form-control col-md-2" type="number" value="<?php echo($row['Price']+0.50);?>" data-decimals="2" max="999999" id="price" name="price" step=".1" min="<?php echo($row['Price']+0.5);?>" required pattern="^\d+(?:\.\d{1,2})?$" onkeypress="return isNumeric(event)" > 
                   </div>
                 </div>
                 <button type="submit" name="submit" class="btn btn-outline-info">Make a Bid</button>

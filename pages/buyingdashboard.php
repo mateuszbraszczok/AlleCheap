@@ -104,7 +104,7 @@ session_start();
                                 <tr>
                                 <th scope="col">Picture</th>
                                 <th scope="col">Title</th>
-                                <th scope="col">Sellerr</th>
+                                <th scope="col">Seller</th>
                                 <th scope="col">End Time</th>
                                 <th scope="col">Price [PLN]</th>
                                 </tr>

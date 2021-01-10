@@ -12,40 +12,40 @@ session_start();
     $product_id = $_GET['id'];
     try 
     {
-      $conn = new mysqli($servername, $username, $password, $dbname);
-      if ($conn->connect_errno!=0)
-      {
-          throw new Exception(mysqli_connect_errno());
-      }
-      else
-      {      
-          $sql = "SELECT * FROM auctions WHERE ID= '$product_id'";      
-          $result=$conn->query($sql);
-          if (!$result) throw new Exception($conn->error);
-          $row = mysqli_fetch_array($result);
-          $date1 = new DateTime();
-          $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
-          if ( $date2 > $date1 || $_SESSION['id'] != $row['WinnerID'])
-          {
-            header("location: ../");
-          }
-          
-          $sql2 = "SELECT * FROM auctionimg WHERE auctionID= '$product_id'";      
-          $result2=$conn->query($sql2);
-          if (!$result2) throw new Exception($conn->error);
-          $row2 = mysqli_fetch_array($result2);
-          
-          $sql = "SELECT * FROM userlocalization WHERE userID='". $row['SellerID']."'";   
-          //echo $sql   ;
-          $result3=$conn->query($sql);
-          if (!$result3) throw new Exception($conn->error);
-          $row3 = mysqli_fetch_array($result3); 
-      }	
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_errno!=0)
+        {
+            throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {      
+            $sql = "SELECT * FROM auctions WHERE ID= '$product_id'";      
+            $result=$conn->query($sql);
+            if (!$result) throw new Exception($conn->error);
+            $row = mysqli_fetch_array($result);
+            $date1 = new DateTime();
+            $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
+            if ( $date2 > $date1 || $_SESSION['id'] != $row['SellerID'])
+            {
+                header("location: ../");
+            }
+            
+            $sql2 = "SELECT * FROM auctionimg WHERE auctionID= '$product_id'";      
+            $result2=$conn->query($sql2);
+            if (!$result2) throw new Exception($conn->error);
+            $row2 = mysqli_fetch_array($result2);
+            
+            $sql = "SELECT * FROM userlocalization WHERE userID='". $row['WinnerID']."'";   
+            //echo $sql   ;
+            $result3=$conn->query($sql);
+            if (!$result3) throw new Exception($conn->error);
+            $row3 = mysqli_fetch_array($result3); 
+        }	
     }
     catch(Exception $e)
     {
-      echo '<span style="color:red;">Server error! Please visit us later!</span>';
-      echo '<br />Info for devs: '.$e;
+        echo '<span style="color:red;">Server error! Please visit us later!</span>';
+        echo '<br />Info for devs: '.$e;
     }         
  ?> 
 <!DOCTYPE html>
@@ -165,7 +165,7 @@ session_start();
     <br>
     <div class="container" style="border-style: solid; border-width: 1px; padding:30px; margin-bottom:50px; ">   
         <div class="row justify-content-md-center " >
-          <div class="col-12"><H2> Congratulations, You bought: </H2></div>
+          <div class="col-12"><H2> Congratulations, You sold: </H2></div>
             <?php
                  echo("<h1>".$row['Title']."</h1>");   
               ?>  
@@ -175,10 +175,10 @@ session_start();
             <img class="img-thumbnail img img-responsive " src="<?php echo($row2['Directory']);?>" alt="product_picture" >
         </div>
         <div class="row " >
-          <div class="col-md-12">
+          <div class="col-md-6">
               <div>
                 
-                <br><br><h5>You Pay:</h5><br>
+                <br><br><h5>You will get:</h5><br>
                 <h3><?php echo($row['Price']);?> PLN</h3>
                 <br><br>
               </div>
@@ -187,7 +187,7 @@ session_start();
             </div>
             <div class="row " >
              <div class="col-md-12">
-             <?php echo "<h3><a href='user?id=". $row['SellerID'] ."'>Seller Profile</a><h3>"; ?>
+             <?php echo "<h3><a href='user?id=". $row['WinnerID'] ."'>Buyer Profile</a><h3>"; ?>
    
              </div>
             </div>
@@ -237,15 +237,12 @@ session_start();
                             if (!$result2) throw new Exception($conn->error);
                             $row2 = mysqli_fetch_array($result2);
 
-                            
-
                             echo "<td style='white-space:nowrap;'>" . $row['time'] . "</td>";
                             echo "<td>" . $row2['username'] . "</td>";
                             echo "<td>" . $row['bidprice'] . "</td>";
                             echo "</a></tr>";
                         }
-                        echo "</tbody></table> </div>";       
-                                                         
+                        echo "</tbody></table> </div>";                                         
                       }	
                     }
                     catch(Exception $e)
@@ -259,7 +256,7 @@ session_start();
                 <div style="margin:auto;
                     vertical-align:middle;">
                     <?php if (isset($row3['Latitude'])) { ?>
-                    <h3>Seller Localization</h3>
+                    <h3>Buyer Localization</h3>
             <div id="map"></div>
             <?php } ?>
               </div>
@@ -271,11 +268,10 @@ session_start();
     
              
   </main>
-  
-      
+
 
   <div class="wrapper flex-grow-1"></div>
-  <footer class="bg-light text-center text-lg-start" >
+  <footer class="bg-light text-center text-lg-start">
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.3)">
       © 2021 Copyright:
       <span class="text-dark">Braszczok & Wojciechowski</span>
@@ -285,6 +281,7 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+
   <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {

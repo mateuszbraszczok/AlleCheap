@@ -187,8 +187,8 @@ session_start();
                                 $result3=$conn->query($sql);
                                 if (!$result3) throw new Exception($conn->error);
                                 $row3 = mysqli_fetch_array($result3);
-                                echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
-                                echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
+                                echo "<td scope='row'><a href='sold?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                                echo "<td><a href='sold?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
                                 if(isset($row3['username']))
                                  // echo "<td>"  .$row3['username'].  "</td>";
                                   echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row3['username']. "</a></td>";

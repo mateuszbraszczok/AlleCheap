@@ -5,6 +5,16 @@ session_start();
     $_SESSION['from']="auction_list";
     header("location: login");
   }
+  if (isset($_POST['Clothes']))
+    $Clothes=true;
+  if (isset($_POST['Electronics']))
+    $Electronics=true;
+  if (isset($_POST['Books']))
+    $Books=true;
+  if (isset($_POST['Sport']))
+    $Sport=true;
+  if (isset($_POST['Other']))
+    $Other=true;                
  ?> 
 
 <!DOCTYPE html>
@@ -82,7 +92,41 @@ session_start();
     <br>
     <div class="container-fluid" >   
       <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px;">
-        <div class="col-md">
+        <div class="col-md-2">
+        <h4>Choose Category:</h4>
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Clothes" name="Clothes" id="Check1" <?php if( isset($Clothes)) echo "checked"; ?>>
+            <label class="form-check-label" for="Check1">
+            Clothes
+            </label>
+          </div><div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Electronics" name="Electronics" id="Check2"<?php if( isset($Electronics)) echo "checked"; ?>>
+            <label class="form-check-label" for="Check2">
+            Electronics
+            </label>
+          </div><div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Books" name="Books" id="Check3"<?php if( isset($Books)) echo "checked"; ?>>
+            <label class="form-check-label" for="Check3">
+            Books
+            </label>
+          </div><div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Sport" name="Sport" id="Check4"<?php if( isset($Sport)) echo "checked"; ?>>
+            <label class="form-check-label" for="Check4">
+            Sport 
+            </label>
+          </div><div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Other" name="Other" id="Check5"<?php if( isset($Other)) echo "checked"; ?>>
+            <label class="form-check-label" for="Check5">
+            Other
+            </label>
+            <br>
+            <button type="submit" class="btn btn-secondary">Filter</button>
+          </form>
+        </div>
+        </div>
+        <div class="col-md-10">
+        
           <h1>Selling Items</h1>
           <?php
             require_once "dbconnect.php";
@@ -96,7 +140,29 @@ session_start();
               }
               else
               {      
-                $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."'";      
+                if (!isset($Clothes) && !isset($Electronics) && !isset($Books) && !isset($Sport) && !isset($Other) )
+                {
+                  $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."'";
+                }
+                else
+                {
+                  $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."' AND Category in(";
+                  if (isset($Clothes))
+                    $sql.= " 'Clothes',";
+                  if (isset($Electronics))
+                    $sql.= " 'Electronics',";
+                  if (isset($Books))
+                    $sql.= " 'Books',";
+                  if (isset($Sport))
+                    $sql.= " 'Sport',";
+                  if (isset($Other))
+                    $sql.= " 'Other',";
+                  $sql = substr($sql, 0, -1);
+                  $sql.=")";
+                }
+                
+                //echo ($sql);
+                        
                 $result=$conn->query($sql);
                 if (!$result) throw new Exception($conn->error);
                 echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
