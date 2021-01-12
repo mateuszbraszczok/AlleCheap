@@ -135,7 +135,7 @@ session_start();
                               
                             else
                               echo "<td>.......</td>";
-                            echo "<td>" . $row['EndDate'] . "</td>";
+                            echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
                         }
@@ -194,7 +194,7 @@ session_start();
                                   echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row3['username']. "</a></td>";
                                 else
                                   echo "<td>.......</td>";
-                                echo "<td>" . $row['EndDate'] . "</td>";
+                                echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
                                 echo "<td>" . $row['Price'] . "</td>";
                                 echo "</a></tr>";
                             }
@@ -240,7 +240,7 @@ session_start();
 
                             echo "<td scope='row'><a href='login'><img src='" . $row2['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='login'>" . $row['Title'] . "</a></td>";
-                            echo "<td>" . $row['EndDate'] . "</td>";
+                            echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";
                             echo "</a></tr>";
                         }

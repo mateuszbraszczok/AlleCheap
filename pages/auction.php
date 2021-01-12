@@ -175,7 +175,7 @@ session_start();
               <div>
                 <h7>Title</h7>
                 <h4><?php echo($row['Title']);?></h4>
-                <br><br><small>To End</small><br>
+                <small>To End</small><br>
                 <strong><?php echo($diff->format('%d days, %h hours %i min'));?> </strong>
                 <br><br><small>Actual Price</small><br>
                 <strong><?php echo($row['Price']);?> PLN</strong>
@@ -194,6 +194,7 @@ session_start();
 
               </form>
               <?php } ?>
+              <?php echo "<br><h4><a href='user?id=". $row['SellerID'] ."'>Seller Profile</a><h4>"; ?>
             </div>
             </div>
             <div class="row " style="margin-top:50px;">
@@ -243,7 +244,7 @@ session_start();
                             $row2 = mysqli_fetch_array($result2);
 
                             echo "<td style='white-space:nowrap;'>" . $row['time'] . "</td>";
-                            echo "<td>" . $row2['username'] . "</td>";
+                            echo "<td><a href='user?id=". $row['buyerID'] ."'>" . $row2['username'] . "</a></td>";
                             echo "<td>" . $row['bidprice'] . "</td>";
                             echo "</a></tr>";
                         }

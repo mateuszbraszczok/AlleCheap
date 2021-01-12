@@ -8,7 +8,10 @@ session_start();
   {
     header("location: ../");
   }
-  
+  if ($_GET['id'] === $_SESSION['id'])
+  {
+    header("location: profile");
+  }
     require_once "dbconnect.php";
 
     try 
