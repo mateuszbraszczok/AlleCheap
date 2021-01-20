@@ -19,10 +19,12 @@ session_start();
       }
       else
       {      
-          $sql = "SELECT * FROM auctions WHERE ID= '$product_id'";      
+          $sql = "SELECT auctions.*, auctionimg.Directory, userlocalization.*  FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID 
+          LEFT JOIN userlocalization ON auctions.SellerID=userlocalization.userID WHERE auctions.ID= '$product_id'";      
           $result=$conn->query($sql);
           if (!$result) throw new Exception($conn->error);
           $row = mysqli_fetch_array($result);
+
           $date1 = new DateTime();
           $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
           if ( $date2 > $date1 || $_SESSION['id'] != $row['WinnerID'])
@@ -30,16 +32,11 @@ session_start();
             header("location: ../");
           }
           
-          $sql2 = "SELECT * FROM auctionimg WHERE auctionID= '$product_id'";      
-          $result2=$conn->query($sql2);
-          if (!$result2) throw new Exception($conn->error);
-          $row2 = mysqli_fetch_array($result2);
-          
-          $sql = "SELECT * FROM userlocalization WHERE userID='". $row['SellerID']."'";   
+         /* $sql = "SELECT * FROM userlocalization WHERE userID='". $row['SellerID']."'";   
           //echo $sql   ;
           $result3=$conn->query($sql);
           if (!$result3) throw new Exception($conn->error);
-          $row3 = mysqli_fetch_array($result3); 
+          $row3 = mysqli_fetch_array($result3); */
       }	
     }
     catch(Exception $e)
@@ -125,7 +122,7 @@ session_start();
                               
         </div>
         <div class="row justify-content-md-center " >
-            <img class="img-thumbnail img img-responsive " src="<?php echo($row2['Directory']);?>" alt="product_picture" >
+            <img class="img-thumbnail img img-responsive " src="<?php echo($row['Directory']);?>" alt="product_picture" >
         </div>
         <div class="row " >
           <div class="col-md-12">
@@ -168,7 +165,7 @@ session_start();
                       }
                       else
                       {      
-                        $sql = "SELECT * FROM bidding WHERE auctionID ='". $_GET['id']."' ORDER BY time DESC";      
+                        $sql = "SELECT bidding.*, users.username  FROM bidding INNER JOIN users ON bidding.buyerID=users.ID WHERE auctionID ='". $_GET['id']."' ORDER BY time DESC";      
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
@@ -181,20 +178,12 @@ session_start();
                             </thead>
                             <tbody>';
                                 
-                        while($row = mysqli_fetch_array($result))
+                        while($row2 = mysqli_fetch_array($result))
                         {
                             echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT username FROM users WHERE ID='". $row['buyerID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
-
-                            
-
-                            echo "<td style='white-space:nowrap;'>" . $row['time'] . "</td>";
+                            echo "<td style='white-space:nowrap;'>" . $row2['time'] . "</td>";
                             echo "<td>" . $row2['username'] . "</td>";
-                            echo "<td>" . $row['bidprice'] . "</td>";
+                            echo "<td>" . $row2['bidprice'] . "</td>";
                             echo "</a></tr>";
                         }
                         echo "</tbody></table> </div>";       
@@ -209,17 +198,16 @@ session_start();
                 ?>               
                 </div></div>
                 <div class="col-md-12">
-                <div style="margin:auto;
-                    vertical-align:middle;">
-                    <?php if (isset($row3['Latitude'])) { ?>
+                <div style="margin:auto; vertical-align:middle;">
+                  <?php if (isset($row['Latitude'])) { ?>
                     <h3>Seller Localization</h3>
-            <div id="map"></div>
-            <?php } ?>
+                    <div id="map"></div>
+                  <?php } ?>
               </div>
               
             </div>
             
-            </div>
+          </div>
     </div>
     
              
@@ -241,14 +229,14 @@ session_start();
   <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: <?php if(isset($row3['Latitude'])) echo "10";  else echo"6"; ?>,
-          center: { lat: <?php if(isset($row3['Latitude'])) echo $row3['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row3['Longitude'])) echo $row3['Longitude'];  else echo"19.067"; ?> },
+          zoom: <?php if(isset($row['Latitude'])) echo "10";  else echo"6"; ?>,
+          center: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
         });
         marker = new google.maps.Marker({
           map,
           draggable: true,
           animation: google.maps.Animation.DROP,
-          position: { lat: <?php if(isset($row3['Latitude'])) echo $row3['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row3['Longitude'])) echo $row3['Longitude'];  else echo"19.067"; ?> },
+          position: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
         });
         marker.addListener("click", toggleBounce);
       }

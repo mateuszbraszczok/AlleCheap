@@ -45,7 +45,6 @@
     if (isset($_POST['checkbox1'])) 
       $_SESSION['fr_checkbox1'] = true;
 
-
     require_once "dbconnect.php";
 
 
@@ -97,7 +96,16 @@
           else
           {
             throw new Exception($conn->error);
-          }   
+          } 
+
+          if ($conn->query("INSERT INTO userimg VALUES (NULL, '".$_SESSION['id']."', 'profile_pictures/default.png')"))
+          {
+            $_SESSION['imgstatus']='profile_pictures/default.png'; 
+          }
+          else
+          {
+            throw new Exception($conn->error);
+          }    
         }
 				$conn->close();
 			}	
@@ -117,7 +125,6 @@
     return $data;
   }
 ?>
-
 
 
 <!DOCTYPE html>
@@ -146,14 +153,14 @@
 
   <?php require_once('header.php'); ?>
 
-
   <main>
     <br>
     <div class="container">
     <div class="row ">
         <div class="col-sm-1 col-lg-2"></div>      
         <div class="col-sm-9 col-lg-7" >
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+        <?php $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF']); ?>
+        <form method="post" action="<?php echo basename($PHP_SELF, '.php');?>">
           <fieldset style=" padding:20px; border: 1px solid lightgray; border-radius: 5px;">
           <form>
           <div class="form-row">
@@ -301,7 +308,7 @@
         document.getElementById("passHelp").style.visibility = 'visible';
       }
     });
-</script>
+  </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>

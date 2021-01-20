@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
   if (!isset($_SESSION['login'])) 
   {
     $_SESSION['from']="sellform";
@@ -222,7 +223,8 @@ session_start();
     <div class="container" >   
         <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md">
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+                <?php $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF']); ?>
+                <form method="post" action="<?php echo basename($PHP_SELF, '.php');?>" enctype="multipart/form-data">
                     <div class="row justify-content-center">
                         <div class="col align-self-center">
                             <div class="image" >

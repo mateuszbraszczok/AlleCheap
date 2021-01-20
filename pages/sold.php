@@ -12,40 +12,30 @@ session_start();
     $product_id = $_GET['id'];
     try 
     {
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        if ($conn->connect_errno!=0)
+      $conn = new mysqli($servername, $username, $password, $dbname);
+      if ($conn->connect_errno!=0)
+      {
+        throw new Exception(mysqli_connect_errno());
+      }
+      else
+      {      
+        $sql = "SELECT auctions.*, auctionimg.Directory, userlocalization.* FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID LEFT JOIN userlocalization  ON userlocalization.userID=auctions.WinnerID WHERE auctions.ID= '$product_id'";      
+        $result=$conn->query($sql);
+        if (!$result) throw new Exception($conn->error);
+        $row = mysqli_fetch_array($result);
+        //print_r($row);
+        $date1 = new DateTime();
+        $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
+        if ( $date2 > $date1 || $_SESSION['id'] != $row['SellerID'])
         {
-            throw new Exception(mysqli_connect_errno());
+            header("location: ../");
         }
-        else
-        {      
-            $sql = "SELECT * FROM auctions WHERE ID= '$product_id'";      
-            $result=$conn->query($sql);
-            if (!$result) throw new Exception($conn->error);
-            $row = mysqli_fetch_array($result);
-            $date1 = new DateTime();
-            $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
-            if ( $date2 > $date1 || $_SESSION['id'] != $row['SellerID'])
-            {
-                header("location: ../");
-            }
-            
-            $sql2 = "SELECT * FROM auctionimg WHERE auctionID= '$product_id'";      
-            $result2=$conn->query($sql2);
-            if (!$result2) throw new Exception($conn->error);
-            $row2 = mysqli_fetch_array($result2);
-            
-            $sql = "SELECT * FROM userlocalization WHERE userID='". $row['WinnerID']."'";   
-            //echo $sql   ;
-            $result3=$conn->query($sql);
-            if (!$result3) throw new Exception($conn->error);
-            $row3 = mysqli_fetch_array($result3); 
-        }	
+      }	
     }
     catch(Exception $e)
     {
-        echo '<span style="color:red;">Server error! Please visit us later!</span>';
-        echo '<br />Info for devs: '.$e;
+      echo '<span style="color:red;">Server error! Please visit us later!</span>';
+      echo '<br />Info for devs: '.$e;
     }         
  ?> 
 <!DOCTYPE html>
@@ -64,8 +54,6 @@ session_start();
     * {
       box-sizing: border-box;
     }
-
-    
     hr.hr-text {
       position: relative;
       border: none;
@@ -87,24 +75,24 @@ session_start();
       transform: translate(-50%, -50%);
     }
     .center {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
     }
     input[type="file"] {
-     display: none;
+      display: none;
     }
     .custom-file-upload {
-        border: 1px solid #ccc;
-        text-align:center;
-        padding: 6px 12px;
-        cursor: pointer;
+      border: 1px solid #ccc;
+      text-align:center;
+      padding: 6px 12px;
+      cursor: pointer;
     }
     #map {
-        height: 500px;
-        width: 100%;
-      }
+      height: 500px;
+      width: 100%;
+    }
 </style>
 
 </head>
@@ -118,108 +106,99 @@ session_start();
     <br>
     <div class="container" style="border-style: solid; border-width: 1px; padding:30px; margin-bottom:50px; border-radius: 5px;">   
         <div class="row justify-content-md-center " >
-          <div class="col-12"><H2> Congratulations, You sold: </H2></div>
+          <div class="col-12"><H2> Congratulations, You sold: </H2>
+          </div>
             <?php
-                 echo("<h1>".$row['Title']."</h1>");   
-              ?>  
+              echo("<h1>".$row['Title']."</h1>");   
+            ?>  
                               
         </div>
         <div class="row justify-content-md-center " >
-            <img class="img-thumbnail img img-responsive " src="<?php echo($row2['Directory']);?>" alt="product_picture" >
+          <img class="img-thumbnail img img-responsive " src="<?php echo($row['Directory']);?>" alt="product_picture" >
         </div>
         <div class="row " >
           <div class="col-md-6">
-              <div>
-                
-                <br><br><h5>You will get:</h5><br>
-                <h3><?php echo($row['Price']);?> PLN</h3>
-                <br><br>
-              </div>
-              
-            </div>
-            </div>
-            <div class="row " >
-             <div class="col-md-12">
-             <?php echo "<h3><a href='user?id=". $row['WinnerID'] ."'>Buyer Profile</a><h3>"; ?>
-   
-             </div>
-            </div>
-            <div class="row " style="margin-top:50px;">
-              <div class="col-md-12">
-                <h3>Description</h3><br>
-                <p style="white-space:pre-wrap; background-color:#e6e6e6; padding :30px;"><?php echo($row['Descript']);?></p>
-              </div>
-            </div>
-            <hr>
-            <div class="row " style="margin-top:50px;">
-              <div class="col-md-12">
-                <div style="margin:auto;
-                    vertical-align:middle;">
-                    <h3>Bid history</h3>
-                    <?php
-                    require_once "dbconnect.php";
+            <div>
+              <br><br><h5>You will get:</h5><br>
+              <h3><?php echo($row['Price']);?> PLN</h3>
+              <br><br>
+            </div>  
+          </div>
+        </div>
+        <div class="row " >
+          <div class="col-md-12">
+          <?php echo "<h3><a href='user?id=". $row['WinnerID'] ."'>Buyer Profile</a><h3>"; ?>
 
-                    try 
-                    {
-                      $conn = new mysqli($servername, $username, $password, $dbname);
-                      if ($conn->connect_errno!=0)
-                      {
-                        throw new Exception(mysqli_connect_errno());
-                      }
-                      else
-                      {      
-                        $sql = "SELECT * FROM bidding WHERE auctionID ='". $_GET['id']."' ORDER BY time DESC";      
-                        $result=$conn->query($sql);
-                        if (!$result) throw new Exception($conn->error);
-                        echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                <th scope="col">DateTime</th>
-                                <th scope="col">Bidder</th>
-                                <th scope="col">Price [PLN]</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-                                
-                        while($row = mysqli_fetch_array($result))
-                        {
-                            echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT username FROM users WHERE ID='". $row['buyerID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
+          </div>
+        </div>
+        <div class="row " style="margin-top:50px;">
+          <div class="col-md-12">
+            <h3>Description</h3><br>
+            <p style="white-space:pre-wrap; background-color:#e6e6e6; padding :30px;"><?php echo($row['Descript']);?></p>
+          </div>
+        </div>
+        <hr>
+        <div class="row " style="margin-top:50px;">
+          <div class="col-md-12">
+            <div style="margin:auto; vertical-align:middle;">
+              <h3>Bid history</h3>
+              <?php
+              require_once "dbconnect.php";
 
-                            echo "<td style='white-space:nowrap;'>" . $row['time'] . "</td>";
-                            echo "<td>" . $row2['username'] . "</td>";
-                            echo "<td>" . $row['bidprice'] . "</td>";
-                            echo "</a></tr>";
-                        }
-                        echo "</tbody></table> </div>";                                         
-                      }	
-                    }
-                    catch(Exception $e)
-                    {
-                      echo '<span style="color:red;">Server error! Please visit us later!</span>';
-                      echo '<br />Info for devs: '.$e;
-                    }               
-                ?>               
-                </div></div>
-                <div class="col-md-12">
-                <div style="margin:auto;
-                    vertical-align:middle;">
-                    <?php if (isset($row3['Latitude'])) { ?>
-                    <h3>Buyer Localization</h3>
-            <div id="map"></div>
-            <?php } ?>
-              </div>
-              
+              try 
+              {
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                if ($conn->connect_errno!=0)
+                {
+                  throw new Exception(mysqli_connect_errno());
+                }
+                else
+                {      
+                  $sql = "SELECT bidding.*, users.username FROM bidding INNER JOIN users ON bidding.buyerID=users.ID WHERE auctionID ='". $_GET['id']."' ORDER BY time DESC";      
+                  $result2=$conn->query($sql);
+                  if (!$result2) throw new Exception($conn->error);
+                  echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
+                      <thead>
+                          <tr>
+                          <th scope="col">DateTime</th>
+                          <th scope="col">Bidder</th>
+                          <th scope="col">Price [PLN]</th>
+                          </tr>
+                      </thead>
+                      <tbody>';
+                          
+                  while($row2 = mysqli_fetch_array($result2))
+                  {
+                      echo "<tr  onclick='window.location'=login>";
+                      echo "<td style='white-space:nowrap;'>" . $row2['time'] . "</td>";
+                      echo "<td>" . $row2['username'] . "</td>";
+                      echo "<td>" . $row2['bidprice'] . "</td>";
+                      echo "</a></tr>";
+                  }
+                  echo "</tbody></table> </div>";                                         
+                }	
+              }
+              catch(Exception $e)
+              {
+                echo '<span style="color:red;">Server error! Please visit us later!</span>';
+                echo '<br />Info for devs: '.$e;
+              }               
+              ?>               
             </div>
+          </div>
+          <div class="col-md-12">
+            <div style="margin:auto; vertical-align:middle;">
+              <?php if (isset($row['Latitude'])) { ?>
+              <h3>Buyer Localization</h3>
+              <div id="map"></div>
+              <?php } ?>
+            </div>
+          
+          </div>
             
-            </div>
+        </div>
     </div>
-    
-             
+       
   </main>
 
 
@@ -238,14 +217,14 @@ session_start();
   <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: <?php if(isset($row3['Latitude'])) echo "10";  else echo"6"; ?>,
-          center: { lat: <?php if(isset($row3['Latitude'])) echo $row3['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row3['Longitude'])) echo $row3['Longitude'];  else echo"19.067"; ?> },
+          zoom: <?php if(isset($row['Latitude'])) echo "10";  else echo"6"; ?>,
+          center: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
         });
         marker = new google.maps.Marker({
           map,
           draggable: true,
           animation: google.maps.Animation.DROP,
-          position: { lat: <?php if(isset($row3['Latitude'])) echo $row3['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row3['Longitude'])) echo $row3['Longitude'];  else echo"19.067"; ?> },
+          position: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
         });
         marker.addListener("click", toggleBounce);
       }
@@ -265,15 +244,10 @@ session_start();
 
       google.maps.event.addListener(marker, 'dragend', function (event) {
     document.getElementById("lat").value = this.getPosition().lat();
- 
-});
-
-    </script>
+    });
+  </script>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvMgbRpn3ebemcufEZEVIjTyeJZAWn6WY&callback=initMap&libraries=&v=weekly"
-      defer>
-    ></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvMgbRpn3ebemcufEZEVIjTyeJZAWn6WY&callback=initMap&libraries=&v=weekly" defer></script>
 
 <script>
 

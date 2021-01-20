@@ -1,5 +1,5 @@
 <?php 
-session_start();
+  session_start();
   if (!isset($_SESSION['login']))
   {
     header("location: login");
@@ -48,7 +48,8 @@ session_start();
                       }
                       else
                       {      
-                        $sql = "SELECT * FROM auctions WHERE EndDate > now() AND WinnerID ='". $_SESSION['id']."'";
+                        $sql = "SELECT auctions.*, auctionimg.Directory, users.username FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID 
+                        INNER JOIN users ON users.ID=auctions.SellerID WHERE EndDate > now() AND WinnerID ='". $_SESSION['id']."'";
                         //echo $sql;     
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
@@ -67,24 +68,11 @@ session_start();
                         while($row = mysqli_fetch_array($result))
                         {
                             echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
-                            
-
-                            $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
-                            //echo $sql   ;
-                            $result3=$conn->query($sql);
-                            if (!$result3) throw new Exception($conn->error);
-                            $row3 = mysqli_fetch_array($result3);
-                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                            if(isset($row3['username']))
+                            if(isset($row['username']))
                              // echo "<td>"  .$row3['username'].  "</td>";
-                              echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
-                              
+                              echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row['username']. "</a></td>";            
                             else
                               echo "<td>.......</td>";
                             echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
@@ -109,7 +97,8 @@ session_start();
                 <?php
                     try 
                     {    
-                        $sql = "SELECT * FROM auctions WHERE EndDate < now() AND WinnerID <>'0' AND WinnerID ='". $_SESSION['id']."'";      
+                        $sql = "SELECT auctions.*, auctionimg.Directory, users.username FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID 
+                        INNER JOIN users ON users.ID=auctions.SellerID WHERE EndDate < now() AND WinnerID <>'0' AND WinnerID ='". $_SESSION['id']."'";      
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
@@ -127,23 +116,11 @@ session_start();
                             while($row = mysqli_fetch_array($result))
                             {
                                 echo "<tr  onclick='window.location'=login>";
-                                $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                                //echo $sql   ;
-                                $result2=$conn->query($sql);
-                                if (!$result2) throw new Exception($conn->error);
-                                $row2 = mysqli_fetch_array($result2);
-                                
-    
-                                $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
-                                //echo $sql   ;
-                                $result3=$conn->query($sql);
-                                if (!$result3) throw new Exception($conn->error);
-                                $row3 = mysqli_fetch_array($result3);
-                                echo "<td scope='row'><a href='bought?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                                echo "<td scope='row'><a href='bought?id=".$row['ID']."'><img src='" . $row['Directory'] . "' width=120></a></td>";
                                 echo "<td><a href='bought?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                                if(isset($row3['username']))
+                                if(isset($row['username']))
                                  // echo "<td>"  .$row3['username'].  "</td>";
-                                  echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
+                                  echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row['username']. "</a></td>";
                                 else
                                   echo "<td>.......</td>";
                                 echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
@@ -163,7 +140,6 @@ session_start();
     <br>
   </main>
 
-
   <div class="wrapper flex-grow-1"></div>
   <footer class="bg-light text-center text-lg-start">
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -175,9 +151,6 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-
- 
-
 
 </body>
 </html>

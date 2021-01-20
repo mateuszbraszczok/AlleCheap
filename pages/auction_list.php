@@ -49,7 +49,8 @@ session_start();
       <div class="row " style="border-style: solid; border-width: 1px;  padding:15px; margin:1px; border-radius: 5px;" >
         <div class="col-md-2" style="border-style: solid; border-width: 1px; border-color: lightgray; border-radius: 5px;">
         <h4>Choose Category:</h4>
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
+        <?php $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF']); ?>
+        <form method="post" action="<?php echo basename($PHP_SELF, '.php');?>">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="Clothes" name="Clothes" id="Check1" <?php if( isset($Clothes)) echo "checked"; ?>>
             <label class="form-check-label" for="Check1">
@@ -95,13 +96,13 @@ session_start();
               }
               else
               {      
-                if (!isset($Clothes) && !isset($Electronics) && !isset($Books) && !isset($Sport) && !isset($Other) )
+
+                $sql = "SELECT auctions.*, auctionimg.Directory, users.username FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID INNER JOIN users ON users.ID=auctions.SellerID
+                WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."'";
+                
+                if (isset($Clothes) || isset($Electronics) || isset($Books) || isset($Sport) || isset($Other) )
                 {
-                  $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."'";
-                }
-                else
-                {
-                  $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID <>'". $_SESSION['id']."' AND Category in(";
+                  $sql.= "AND Category in(";
                   if (isset($Clothes))
                     $sql.= " 'Clothes',";
                   if (isset($Electronics))
@@ -135,22 +136,9 @@ session_start();
                 while($row = mysqli_fetch_array($result))
                 {
                   echo "<tr  onclick='window.location'=login>";
-                  $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                  //echo $sql   ;
-                  $result2=$conn->query($sql);
-                  if (!$result2) throw new Exception($conn->error);
-                  $row2 = mysqli_fetch_array($result2);
-
-
-                  $sql = "SELECT username FROM users WHERE ID='". $row['SellerID']."'";   
-                  //echo $sql   ;
-                  $result3=$conn->query($sql);
-                  if (!$result3) throw new Exception($conn->error);
-                  $row3 = mysqli_fetch_array($result3);
-
-                  echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                  echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row['Directory'] . "' width=120></a></td>";
                   echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                  echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row3['username']. "</a></td>";
+                  echo "<td><a href='user?id=". $row['SellerID'] ."'>" .$row['username']. "</a></td>";
                   echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
                   echo "<td>" . $row['Price'] . "</td>";
                   echo "</a></tr>";
@@ -183,9 +171,6 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-
- 
-
 
 </body>
 </html>

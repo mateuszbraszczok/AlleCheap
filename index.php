@@ -17,17 +17,9 @@ session_start();
   <link rel="stylesheet" href="styles.css" type="text/css"/>  
   <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
   <title>AlleCheap</title>
-
-  
-
 </head>
 
-<body  style="background-image: url(background.jpg); 
-background-position: center center;*/
-background-repeat: no-repeat;
-background-attachment: fixed;
-background-size: cover;">
-
+<body  style="background-image: url(background.jpg); background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
   <header> 
     <nav class="navbar navbar-expand-md navbar-light bg-light">
       <a style="margin-left:15px;" class="navbar-brand" href=""><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
@@ -76,17 +68,17 @@ background-size: cover;">
       </div>
     </nav>
   </header>
-<main>
-  <h1 style="text-align: center;">Welcome on our auction webpage</h1>
-  <div style="text-align: center;"> <a class="btn btn-secondary" href="pages/sellform" role="button">Sell a product</a></div>
-  <br>
-  <div style="text-align: center;"> <a class="btn btn-secondary" href="pages/auction_list" role="button">Buy a product</a></div>
-  <div class="wrapper flex-grow-1"></div>
+  
+  <main>
+    <h1 style="text-align: center;">Welcome on our auction webpage</h1>
+    <div style="text-align: center;"> <a class="btn btn-secondary" href="pages/sellform" role="button">Sell a product</a></div>
+    <br>
+    <div style="text-align: center;"> <a class="btn btn-secondary" href="pages/auction_list" role="button">Buy a product</a></div>
+    <div class="wrapper flex-grow-1"></div>
   </main>
-  <footer class="bg-light text-center text-lg-start " style="position: absolute;
-  bottom: 0; width: 100%;" >
+
+  <footer class="bg-light text-center text-lg-start " style="position: absolute; bottom: 0; width: 100%;" >
     <div class=" p-3" style="background-color: rgba(0, 0, 0, 0.5)">
-      
       <div class="container-fluid">   
         <div class="row ">
           <div class="col-sm-4 col-lg-4"></div>
@@ -94,10 +86,7 @@ background-size: cover;">
           <div class="col-sm-4 col-lg-4 " style="text-align: center;" >Image by <a href="https://pixabay.com/users/mediamodifier-1567646/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2140604">Mediamodifier</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2140604">Pixabay</a>
         </div>
       </div>
-
-
     </div>
-    
   </footer>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

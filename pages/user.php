@@ -1,5 +1,5 @@
 <?php 
-session_start();
+  session_start();
   if (!isset($_SESSION['login']))
   {
     header("location: ../");
@@ -23,46 +23,37 @@ session_start();
         }
         else
         {
-            $sql = $conn->query("SELECT * FROM users WHERE ID='".$_GET['id']."'");
-            if (!$sql) throw new Exception($conn->error);
-            $row = $sql->fetch_assoc();
-            $firstname =$row['firstname'];
-            $lastname =$row['lastname'];
-            $username =$row['username'];
-            $email =$row['email'];
-
-            $sql = $conn->query("SELECT * FROM userimg WHERE ID='".$_GET['id']."'");
-            if (!$sql) throw new Exception($conn->error);
-            $row = $sql->fetch_assoc();
-            $img =$row['status'];
-
-            $sql = $conn->query("SELECT * FROM userlocalization WHERE userID='".$_GET['id']."'");
-            if (!$sql) throw new Exception($conn->error);
-
-            $num_rows = $sql->num_rows; 
-            if ($num_rows == 1)
-            {
-                $row = $sql->fetch_assoc();
-                $lat = $row['Latitude'];
-                $lng = $row['Longitude'];
-                $street_number = $row['street_number'];
-                $route = $row['street'];
-                $city = $row['city'];
-                $state = $row['region'];
-                $country = $row['country'];
-            }
-    }  
-    
-    $conn->close();
-				
+          $sql = $conn->query("SELECT users.*, userimg.status, userlocalization.*  FROM users INNER JOIN userimg ON users.ID=userimg.userID 
+          LEFT JOIN userlocalization ON users.ID=userlocalization.userID WHERE users.ID='".$_GET['id']."'");
+          if (!$sql) throw new Exception($conn->error);
+          $row = $sql->fetch_assoc();
+          
+          $firstname =$row['firstname'];
+          $lastname =$row['lastname'];
+          $username =$row['username'];
+          $email =$row['email'];
+          $img =$row['status'];
+          if (isset($row['Longitude'])){
+            $lat = $row['Latitude'];
+            print_r($row['Latitude']);
+            $lng = $row['Longitude'];
+            $street_number = $row['street_number'];
+            $route = $row['street'];
+            $city = $row['city'];
+            $state = $row['region'];
+            $country = $row['country'];
+          }
+          print_r($lat);
+        }  
+      $conn->close();			
     }
     catch(Exception $e)
     {
       echo '<span style="color:red;">Server error! Please visit us later!</span>';
       echo '<br />Info for devs: '.$e;
     }
-  
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

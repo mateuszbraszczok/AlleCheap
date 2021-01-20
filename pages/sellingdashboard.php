@@ -49,7 +49,7 @@ session_start();
                       }
                       else
                       {      
-                        $sql = "SELECT * FROM auctions WHERE EndDate > now() AND SellerID ='". $_SESSION['id']."'";
+                        $sql = "SELECT auctions.* ,auctionimg.Directory, users.username FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID LEFT JOIN users ON users.ID=auctions.WinnerID WHERE EndDate > now() AND SellerID ='". $_SESSION['id']."'";
                         //echo $sql;     
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
@@ -67,24 +67,12 @@ session_start();
                                 
                         while($row = mysqli_fetch_array($result))
                         {
-                            echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
-                            
-
-                            $sql = "SELECT username FROM users WHERE ID='". $row['WinnerID']."'";   
-                            //echo $sql   ;
-                            $result3=$conn->query($sql);
-                            if (!$result3) throw new Exception($conn->error);
-                            $row3 = mysqli_fetch_array($result3);
-                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<tr  onclick='window.location'=login>";       
+                            echo "<td scope='row'><a href='auction?id=".$row['ID']."'><img src='" . $row['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='auction?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                            if(isset($row3['username']))
-                             // echo "<td>"  .$row3['username'].  "</td>";
-                              echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row3['username']. "</a></td>";
+                            if(isset($row['username']))
+                             // echo "<td>"  .$row['username'].  "</td>";
+                              echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row['username']. "</a></td>";
                               
                             else
                               echo "<td>.......</td>";
@@ -110,7 +98,7 @@ session_start();
                 <?php
                     try 
                     {    
-                        $sql = "SELECT * FROM auctions WHERE EndDate < now() AND WinnerID <>'0' AND SellerID ='". $_SESSION['id']."'";      
+                        $sql = "SELECT auctions.* ,auctionimg.Directory, users.username FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID INNER JOIN users ON users.ID=auctions.WinnerID WHERE EndDate < now() AND WinnerID <>'0' AND SellerID ='". $_SESSION['id']."'";      
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
@@ -128,23 +116,11 @@ session_start();
                             while($row = mysqli_fetch_array($result))
                             {
                                 echo "<tr  onclick='window.location'=login>";
-                                $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                                //echo $sql   ;
-                                $result2=$conn->query($sql);
-                                if (!$result2) throw new Exception($conn->error);
-                                $row2 = mysqli_fetch_array($result2);
-                                
-    
-                                $sql = "SELECT username FROM users WHERE ID='". $row['WinnerID']."'";   
-                                //echo $sql   ;
-                                $result3=$conn->query($sql);
-                                if (!$result3) throw new Exception($conn->error);
-                                $row3 = mysqli_fetch_array($result3);
-                                echo "<td scope='row'><a href='sold?id=".$row['ID']."'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                                echo "<td scope='row'><a href='sold?id=".$row['ID']."'><img src='" . $row['Directory'] . "' width=120></a></td>";
                                 echo "<td><a href='sold?id=".$row['ID']."'>" . $row['Title'] . "</a></td>";
-                                if(isset($row3['username']))
-                                 // echo "<td>"  .$row3['username'].  "</td>";
-                                  echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row3['username']. "</a></td>";
+                                if(isset($row['username']))
+                                 // echo "<td>"  .$row['username'].  "</td>";
+                                  echo "<td><a href='user?id=". $row['WinnerID'] ."'>" .$row['username']. "</a></td>";
                                 else
                                   echo "<td>.......</td>";
                                 echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
@@ -168,7 +144,7 @@ session_start();
                 <?php
                     try 
                     {        
-                        $sql = "SELECT * FROM auctions WHERE EndDate < now() AND WinnerID ='0' AND SellerID ='". $_SESSION['id']."'";     
+                        $sql = "SELECT auctions.* ,auctionimg.Directory FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID WHERE EndDate < now() AND WinnerID ='0' AND SellerID ='". $_SESSION['id']."'";     
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
@@ -185,13 +161,7 @@ session_start();
                         while($row = mysqli_fetch_array($result))
                         {
                             echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT Directory FROM auctionimg WHERE auctionID='". $row['ID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
-
-                            echo "<td scope='row'><a href='login'><img src='" . $row2['Directory'] . "' width=120></a></td>";
+                            echo "<td scope='row'><a href='login'><img src='" . $row['Directory'] . "' width=120></a></td>";
                             echo "<td><a href='login'>" . $row['Title'] . "</a></td>";
                             echo "<td style='white-space:nowrap;'>" . $row['EndDate'] . "</td>";
                             echo "<td>" . $row['Price'] . "</td>";

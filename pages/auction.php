@@ -11,45 +11,39 @@ session_start();
   
  ?> 
  <?php
-              require_once "dbconnect.php";
-              $product_id = $_GET['id'];
-              try 
-              {
-                $conn = new mysqli($servername, $username, $password, $dbname);
-                if ($conn->connect_errno!=0)
-                {
-                  throw new Exception(mysqli_connect_errno());
-                }
-                else
-                {      
-                  $sql = "SELECT * FROM auctions WHERE ID= '$product_id'";      
-                  $result=$conn->query($sql);
-                  if (!$result) throw new Exception($conn->error);
-                  $row = mysqli_fetch_array($result);
-                  $date1 = new DateTime();
-                  $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
-                  if ( $date2 < $date1 )
-                  {
-                  // header_remove("location"); 
+  require_once "dbconnect.php";
+  $product_id = $_GET['id'];
+  try 
+  {
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_errno!=0)
+    {
+      throw new Exception(mysqli_connect_errno());
+    }
+    else
+    {      
+      $sql = "SELECT auctions.* ,auctionimg.Directory FROM auctions INNER JOIN auctionimg ON auctions.ID=auctionimg.auctionID WHERE auctions.ID= '$product_id'";     
+      $result=$conn->query($sql);
+      if (!$result) throw new Exception($conn->error);
+      $row = mysqli_fetch_array($result);
+      $date1 = new DateTime();
+      $date2 = DateTime::createFromFormat('Y-m-d H:i:s',$row['EndDate']);
+      if ( $date2 < $date1 )
+      {
+      // header_remove("location"); 
+      header("location: ../");
+      }
+      $diff = $date1->diff($date2);
 
-                  header("location: ../");
-                  
-                  }
-                  $diff = $date1->diff($date2);
-                  $sql2 = "SELECT * FROM auctionimg WHERE auctionID= '$product_id'";      
-                  $result2=$conn->query($sql2);
-                  if (!$result2) throw new Exception($conn->error);
-                  $row2 = mysqli_fetch_array($result2);
-                  //echo($row2['Directory']);
+    }	
+  }
+  catch(Exception $e)
+  {
+    echo '<span style="color:red;">Server error! Please visit us later!</span>';
+    echo '<br />Info for devs: '.$e;
+  }               
+  ?>  
 
-                }	
-              }
-              catch(Exception $e)
-              {
-                echo '<span style="color:red;">Server error! Please visit us later!</span>';
-                echo '<br />Info for devs: '.$e;
-              }               
-              ?>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -118,10 +112,9 @@ session_start();
     <div class="container" style="border-style: solid; border-width: 1px; padding:30px; margin-bottom:50px; border-radius: 5px; ">   
         <div class="row " >
           <div class="col-md-6">
-            
-                <img class="img-thumbnail img img-responsive " src="<?php echo($row2['Directory']);?>" alt="product_picture" style="width:100%;">
-                  <br> 
-                  <br>               
+            <img class="img-thumbnail img img-responsive " src="<?php echo($row['Directory']);?>" alt="product_picture" style="width:100%;">
+            <br> 
+            <br>               
           </div>
             
           <div class="col-md-6">
@@ -174,7 +167,7 @@ session_start();
                       }
                       else
                       {      
-                        $sql = "SELECT * FROM bidding WHERE auctionID ='". $_GET['id']."' ORDER BY time DESC";      
+                        $sql = "SELECT bidding.*, users.username FROM bidding INNER JOIN users ON bidding.buyerID = users.ID WHERE bidding.auctionID ='". $_GET['id']."' ORDER BY time DESC";      
                         $result=$conn->query($sql);
                         if (!$result) throw new Exception($conn->error);
                         echo '<div style="overflow-x:auto;"><table class="table table-hover" style="width:100%">
@@ -190,14 +183,8 @@ session_start();
                         while($row = mysqli_fetch_array($result))
                         {
                             echo "<tr  onclick='window.location'=login>";
-                            $sql = "SELECT username FROM users WHERE ID='". $row['buyerID']."'";   
-                            //echo $sql   ;
-                            $result2=$conn->query($sql);
-                            if (!$result2) throw new Exception($conn->error);
-                            $row2 = mysqli_fetch_array($result2);
-
                             echo "<td style='white-space:nowrap;'>" . $row['time'] . "</td>";
-                            echo "<td><a href='user?id=". $row['buyerID'] ."'>" . $row2['username'] . "</a></td>";
+                            echo "<td><a href='user?id=". $row['buyerID'] ."'>" . $row['username'] . "</a></td>";
                             echo "<td>" . $row['bidprice'] . "</td>";
                             echo "</a></tr>";
                         }

@@ -92,62 +92,63 @@ session_start();
     }
     if(isset($_FILES['img']))
     {
-    $file = $_FILES['img'];
-    $fileName = $_FILES['img']['name'];
-    $fileTmpName = $_FILES['img']['tmp_name'];
-    $fileSize = $_FILES['img']['size'];
-    $fileError = $_FILES['img']['error'];
-    $fileType = $_FILES['img']['type'];
+      $file = $_FILES['img'];
+      $fileName = $_FILES['img']['name'];
+      $fileTmpName = $_FILES['img']['tmp_name'];
+      $fileSize = $_FILES['img']['size'];
+      $fileError = $_FILES['img']['error'];
+      $fileType = $_FILES['img']['type'];
+      
+      if($fileError!==4) {
+        $fileExt = explode('.',$fileName);
+        $fileActualExt = strtolower(end($fileExt));
+        $allowed = array('jpg','jpeg','png');
 
-    $fileExt = explode('.',$fileName);
-    $fileActualExt = strtolower(end($fileExt));
+        if(in_array($fileActualExt,$allowed)) {
+          if($fileActualExt =='jpeg')
+            $fileActualExt='jpg';
+          if ($fileError === 0){
+            $fileNameNew = "profile".$_SESSION['id'].".".$fileActualExt;
+            $fileDestination = 'profile_pictures/'.$fileNameNew ;
+            move_uploaded_file($fileTmpName, $fileDestination);
+            require_once "dbconnect.php";
 
-    $allowed = array('jpg','jpeg','png');
-
-    if(in_array($fileActualExt,$allowed)) {
-      if($fileActualExt =='jpeg')
-        $fileActualExt='jpg';
-      if ($fileError === 0){
-        $fileNameNew = "profile".$_SESSION['id'].".".$fileActualExt;
-        $fileDestination = 'profile_pictures/'.$fileNameNew ;
-        move_uploaded_file($fileTmpName, $fileDestination);
-        require_once "dbconnect.php";
-
-        try 
-        {
-          $conn = new mysqli($servername, $username, $password, $dbname);
-          if ($conn->connect_errno!=0)
-          {
-            throw new Exception(mysqli_connect_errno());
-          }
-          else
-          {      
-            $sql = "UPDATE userimg SET status='".$fileDestination."' WHERE userID=".$_SESSION['id'];      
-            if (!$conn->query($sql)) throw new Exception($conn->error);
-            else{
-              $_SESSION['imgstatus']=$fileDestination;  
+            try 
+            {
+              $conn = new mysqli($servername, $username, $password, $dbname);
+              if ($conn->connect_errno!=0)
+              {
+                throw new Exception(mysqli_connect_errno());
+              }
+              else
+              {      
+                $sql = "UPDATE userimg SET status='".$fileDestination."' WHERE userID=".$_SESSION['id'];      
+                if (!$conn->query($sql)) throw new Exception($conn->error);
+                else{
+                  $_SESSION['imgstatus']=$fileDestination;  
+                }
+                  
+                $wmax = 640;
+                $hmax = 640; 
+                img_resize($fileDestination, $fileDestination, $wmax, $hmax, $fileActualExt);    
+                $conn->close();
+              }	
             }
-              
-            $wmax = 640;
-          	$hmax = 640; 
-            img_resize($fileDestination, $fileDestination, $wmax, $hmax, $fileActualExt);    
-            $conn->close();
-          }	
+            catch(Exception $e)
+            {
+              echo '<span style="color:red;">Server error! Please visit us later!</span>';
+              echo '<br />Info for devs: '.$e;
+            }
+          }
+          else {
+            echo "There was an error uploading your file!";
+          }
         }
-        catch(Exception $e)
-        {
-          echo '<span style="color:red;">Server error! Please visit us later!</span>';
-          echo '<br />Info for devs: '.$e;
+        else {
+          echo "You cannot upload files of this type!";
         }
       }
-      else {
-        echo "There was an error uploading your file!";
-      }
     }
-    else {
-      echo "You cannot upload files of this type!";
-    }
-  }
   }
   if(!isset($_SESSION['lat']) || !isset($_SESSION['lon']) )
     {
@@ -309,8 +310,8 @@ session_start();
     <div class="container" >   
         <div class="row " style="border-style: solid; border-width: 1px; padding:15px; margin:1px; border-radius: 5px;">
             <div class="col-md">
-            
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+                <?php $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF']); ?>
+                <form method="post" action="<?php echo basename($PHP_SELF, '.php');?>" enctype="multipart/form-data">
                   <div class="row ">
                   <div class="col-md-6">
                     <div class="image">
