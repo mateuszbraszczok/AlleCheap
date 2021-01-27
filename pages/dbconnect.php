@@ -6,4 +6,5 @@
 	//$password = "R4GfSZN9";
 	$password = "32EH8gZx";
 	mysqli_report(MYSQLI_REPORT_STRICT);
+	echo"dupa";
 ?>
