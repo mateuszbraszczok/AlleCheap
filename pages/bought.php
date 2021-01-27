@@ -227,47 +227,41 @@ session_start();
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
   <script>
-      function initMap() {
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: <?php if(isset($row['Latitude'])) echo "10";  else echo"6"; ?>,
-          center: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
-        });
-        marker = new google.maps.Marker({
-          map,
-          draggable: true,
-          animation: google.maps.Animation.DROP,
-          position: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
-        });
-        marker.addListener("click", toggleBounce);
-      }
-        
-      function toggleBounce() {
-        var lat = marker.getPosition().lat();
-        var lng = marker.getPosition().lng();
+    function initMap() {
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: <?php echo (isset($row['Latitude']) ? "11" : "6"); ?>,
+        center: { lat: <?php echo($row['Latitude'] ?? "51.327"); ?>, lng: <?php  echo( $row['Longitude'] ?? "19.067"); ?> },
+      });
+      marker = new google.maps.Marker({
+        map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: { lat: <?php echo($row['Latitude'] ?? "51.327"); ?>, lng: <?php echo( $row['Longitude'] ?? "19.067"); ?> },
+      });
+      marker.addListener("click", toggleBounce);
+    }
+      
+    function toggleBounce() {
+      var lat = marker.getPosition().lat();
+      var lng = marker.getPosition().lng();
 
-        document.getElementById("lat").value=lat;
-        document.getElementById("lon").value=lng;
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
+      document.getElementById("lat").value=lat;
+      document.getElementById("lon").value=lng;
+      if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+      } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
       }
+    }
 
-      google.maps.event.addListener(marker, 'dragend', function (event) {
+    google.maps.event.addListener(marker, 'dragend', function (event) {
     document.getElementById("lat").value = this.getPosition().lat();
  
-});
+  });
 
     </script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvMgbRpn3ebemcufEZEVIjTyeJZAWn6WY&callback=initMap&libraries=&v=weekly"
-      defer>
-    ></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvMgbRpn3ebemcufEZEVIjTyeJZAWn6WY&callback=initMap&libraries=&v=weekly" defer></script>
 
-<script>
-
-</script>
 </body>
 </html>

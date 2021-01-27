@@ -35,7 +35,6 @@
           $img =$row['status'];
           if (isset($row['Longitude'])){
             $lat = $row['Latitude'];
-            print_r($row['Latitude']);
             $lng = $row['Longitude'];
             $street_number = $row['street_number'];
             $route = $row['street'];
@@ -43,7 +42,6 @@
             $state = $row['region'];
             $country = $row['country'];
           }
-          print_r($lat);
         }  
       $conn->close();			
     }
@@ -226,14 +224,14 @@
   <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: <?php if(isset($lat)) echo "10";  else echo"6"; ?>,
-          center: { lat: <?php if(isset($lat)) echo $lat;  else echo"51.327"; ?>, lng: <?php if(isset($lng)) echo $lng;  else echo"19.067"; ?> },
+          zoom: <?php echo(isset($lat) ? "11": "6"); ?>,
+          center: { lat: <?php echo($lat ?? "51.327"); ?>, lng: <?php echo($lng ?? "19.067"); ?> },
         });
         marker = new google.maps.Marker({
           map,
           draggable: false,
           animation: google.maps.Animation.DROP,
-          position: { lat: <?php if(isset($lat)) echo $lat;  else echo"51.327"; ?>, lng: <?php if(isset($lng)) echo $lng;  else echo"19.067"; ?> },
+          position: { lat: <?php echo($lat ?? "51.327"); ?>, lng: <?php echo($lng ?? "19.067"); ?> },
         });
         
       }

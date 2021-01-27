@@ -16,7 +16,7 @@
     require_once "dbconnect.php";
 
     try 
-	{
+	  {
       $conn = new mysqli($servername, $username, $password, $dbname);
       if ($conn->connect_errno!=0)
       {
@@ -32,14 +32,23 @@
         {
           $_SESSION['maperror']="nie ma takiego adresu";
           header('Location: editprofile');
+          die();
         }
         $street_number = $json_result->results[0]->address_components[0]->long_name;
         
         $route = $json_result->results[0]->address_components[1]->long_name;
         $route = mb_convert_encoding($route, "UTF-8");
         $i =2;
-        while (($json_result->results[0]->address_components[$i]->types[0] !="locality") && ($json_result->results[0]->address_components[$i]->types[0] !="administrative_area_level_2"))  {$i++; if($i>5){$_SESSION['maperror']="nie ma takiego adresu";
-          header('Location: editprofile'); }}
+        while (($json_result->results[0]->address_components[$i]->types[0] !="locality") && ($json_result->results[0]->address_components[$i]->types[0] !="administrative_area_level_2"))  
+        {
+          $i++; 
+          if($i>5)
+          {
+            $_SESSION['maperror']="nie ma takiego adresu";
+            header('Location: editprofile'); 
+            die();
+         }
+        }
         if($json_result->results[0]->address_components[$i+1]->types[0] =="administrative_area_level_2") $i++;
         $city = $json_result->results[0]->address_components[$i]->long_name;
         $state = $json_result->results[0]->address_components[$i+1]->long_name;
@@ -50,7 +59,7 @@
         //echo ("<br>".$_SESSION['street_number']."<br>".$_SESSION['route']."<br>".$_SESSION['city']."<br>".$_SESSION['state']."<br>".$_SESSION['country']);
         //exit();
 
-        //is it email exist in db?
+        //is it LOCATION FOR THIS USER exist in db?
         $sql = $conn->query("SELECT Latitude FROM userlocalization WHERE userID='".$_SESSION['id']."'");
           
         if (!$sql) throw new Exception($conn->error);
@@ -60,8 +69,6 @@
         {
             $sql = $conn->query("UPDATE userlocalization SET Latitude='".$lat."',Longitude='".$lng."',street_number='".$street_number."',street='".$route."',city='".$city."',region='".$state."',country='".$country."'  WHERE userID='".$_SESSION['id']."' ");
             if (!$sql) throw new Exception($conn->error); 
-          $ProperData=false;
-          $_SESSION['error_mail']="Account with this e-mail already exists!";
         }
         else
         {
@@ -69,10 +76,10 @@
             {
             
             }
-          else
-          {
-            throw new Exception($conn->error);
-          }   
+            else
+            {
+              throw new Exception($conn->error);
+            }   
         }		
         $_SESSION['lat'] = $lat;
         $_SESSION['lng'] = $lng;
@@ -81,20 +88,14 @@
         $_SESSION['city'] = $city;
         $_SESSION['state'] = $state;
         $_SESSION['country'] = $country;
-        header('Location: editprofile');
-		$conn->close();
-				
+        $conn->close();
+        header('Location: editprofile');		
       }
     }
-	catch(Exception $e)
-	{
-		echo '<span style="color:red;">Server error! Please visit us later!</span>';
-		echo '<br />Info for devs: '.$e;
-	}
+    catch(Exception $e)
+    {
+      echo '<span style="color:red;">Server error! Please visit us later!</span>';
+      echo '<br />Info for devs: '.$e;
+    }
   
-
 ?>
-
-
-
-

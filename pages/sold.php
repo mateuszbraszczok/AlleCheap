@@ -217,14 +217,14 @@ session_start();
   <script>
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: <?php if(isset($row['Latitude'])) echo "10";  else echo"6"; ?>,
-          center: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
+          zoom: <?php echo (isset($row['Latitude']) ? "11" : "6"); ?>,
+          center: { lat: <?php echo($row['Latitude'] ?? "51.327"); ?>, lng: <?php  echo( $row['Longitude'] ?? "19.067"); ?> },
         });
         marker = new google.maps.Marker({
           map,
           draggable: true,
           animation: google.maps.Animation.DROP,
-          position: { lat: <?php if(isset($row['Latitude'])) echo $row['Latitude'];  else echo"51.327"; ?>, lng: <?php if(isset($row['Longitude'])) echo $row['Longitude'];  else echo"19.067"; ?> },
+          position: { lat: <?php echo($row['Latitude'] ?? "51.327"); ?>, lng: <?php echo( $row['Longitude'] ?? "19.067"); ?> },
         });
         marker.addListener("click", toggleBounce);
       }
@@ -249,8 +249,5 @@ session_start();
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvMgbRpn3ebemcufEZEVIjTyeJZAWn6WY&callback=initMap&libraries=&v=weekly" defer></script>
 
-<script>
-
-</script>
 </body>
 </html>
