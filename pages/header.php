@@ -22,10 +22,10 @@
         <?php 
         if (!isset($_SESSION['login']))
           echo('<li class="nav-item">
-            <a class="nav-link" href="pages/login"><button type="button" class="btn btn-primary">Login</button></a>
+            <a class="nav-link" href="login"><button type="button" class="btn btn-primary">Login</button></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/register"><button type="button" class="btn btn-success">Sign In</button></a>
+            <a class="nav-link" href="register"><button type="button" class="btn btn-success">Sign In</button></a>
           </li>'); 
         else
         echo('<li class="nav-item dropdown"><a style="margin-right:50px; margin-top:auto; margin-bottom:auto;" class="nav-link dropdown-toggle" href="profile" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
